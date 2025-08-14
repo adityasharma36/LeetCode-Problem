@@ -59,7 +59,7 @@ public:
     int codeOptimisation(vector<int>& nums){
         int count = 0;
         int ele = INT_MIN;
-        sort(nums.begin(),nums.end());
+        // sort(nums.begin(),nums.end());
         for(int i = 0;i<nums.size();i++){
             if(count == 0){
                 count = 1;
