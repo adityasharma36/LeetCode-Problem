@@ -22,8 +22,24 @@ public:
         }
         return false;
     }
+    bool optimiseCode(ListNode* head){
+        ListNode* fast  = head;
+        ListNode* slow = head;
+        while(fast != NULL){
+            fast = fast->next;
+            if(fast!= NULL){
+                fast = fast->next;
+                slow = slow->next;
+                if(fast == slow){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     bool hasCycle(ListNode *head) {
         ListNode* temp = head;
-        return isCycle(temp);
+        // return isCycle(temp);
+        return optimiseCode(temp);
     }
 };
