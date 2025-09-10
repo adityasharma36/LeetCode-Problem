@@ -31,7 +31,43 @@ public:
         }
         return true;
     }
+    void reverseNode(ListNode*&curr,ListNode*& next){
+        if(curr== NULL) return;
+        ListNode* temp = curr->next;
+        curr->next = next;
+        next = curr;
+        curr= temp;
+        reverseNode(curr,next);
+    }
+    bool constSpace(ListNode* head){
+        bool answer = true;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next != NULL && fast->next->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        ListNode * prev = NULL;
+        ListNode* curr = slow->next;
+        reverseNode(curr,prev);
+
+        ListNode * newList = prev;
+        ListNode* newNode  = head;
+
+        while(newList!= NULL){
+            if(newList->val != newNode->val){
+                answer = false;
+                break;
+            }
+
+            newList= newList->next;
+            newNode = newNode->next;
+        }
+        return answer;
+    }
     bool isPalindrome(ListNode* head) {
-        return isPalindr(head);
+        // return withArrayMethod(head);
+        ListNode* temp = head;
+        return constSpace(temp);
     }
 };
