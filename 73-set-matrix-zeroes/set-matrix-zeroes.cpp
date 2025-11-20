@@ -1,48 +1,64 @@
-#include <vector>
-
 class Solution {
 public:
-    void setZeroes(std::vector<std::vector<int>>& matrix) {
-        int n = matrix.size();
-        int m = matrix[0].size();
-        
-        // Use a boolean to track if the first column needs to be zeroed
-        bool col0 = true;
-        
-        // First pass: Use the first row and column as markers
-        for (int i = 0; i < n; ++i) {
-            // Handle the case where an element in the first column is 0
-            if (matrix[i][0] == 0) {
-                col0 = false;
-            }
-            for (int j = 1; j < m; ++j) {
-                if (matrix[i][j] == 0) {
-                    // Mark the row and column
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
-                }
+    void setRowZero(vector<vector<int>>& nums,int row){
+        for(int i = 0;i<nums.size();i++){
+            if(nums[row][i]!=0){
+                nums[row][i]=-1;
             }
         }
-        
-        // Second pass: Use markers to set the inner matrix to zero
-        for (int i = n - 1; i >= 0; --i) {
-            for (int j = m - 1; j >= 1; --j) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
+    }
+    void setColZero(vector<vector<int>>& nums,int col){
+        for(int i = 0;i<nums.size();i++){
+            if(nums[i][col]!=0){
+                nums[i][col]=-1;
+            }
+        }
+    }
+    void zeroesSet(vector<vector<int>>& nums){
+
+        for(int i = 0;i<nums.size();i++){
+            for(int j = 0;j<nums.size();j++){
+                if(nums[i][j]==0){
+                    setRowZero(nums,i);
+                    setColZero(nums,j);
                 }
             }
         }
 
-        // Final pass: Zero out the first row and/or column if needed
-        if (matrix[0][0] == 0) {
-            for (int j = 0; j < m; ++j) {
-                matrix[0][j] = 0;
+        for(int i = 0;i<nums.size();i++){
+            for(int j = 0;j<nums.size();j++){
+                if(nums[i][j]==-1){
+                    nums[i][j]=0;
+                }
             }
         }
-        if (!col0) {
-            for (int i = 0; i < n; ++i) {
-                matrix[i][0] = 0;
+    }
+    void betterSol(vector<vector<int>>& nums){
+        int row = nums.size();
+        int col = nums[0].size();
+
+        vector<int> rowArr(row,0);
+        vector<int>colArr(col,0);
+
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(nums[i][j]==0){
+                    rowArr[i]=1;
+                    colArr[j]=1;
+                }
             }
         }
+
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(rowArr[i]==1 || colArr[j]==1){
+                    nums[i][j]=0;
+                }
+            }
+        }
+    }
+    void setZeroes(vector<vector<int>>& matrix) {
+        // zeroesSet(matrix);
+        betterSol(matrix);
     }
 };
