@@ -11,24 +11,26 @@
  */
 class Solution {
 public:
-    int getHeight(TreeNode* root){
-        if(root == nullptr){
-            return 0;
-        }
-        int leftNode = getHeight(root->left);
-        int rightNode = getHeight(root->right);
-        return max(leftNode,rightNode) +1;
+    int maxHeight(TreeNode* root){
+        if(!root) return 0;
+
+        int leftSide = maxHeight(root->left);
+        int rightSide = maxHeight(root->right);
+        int maxSide = max(leftSide,rightSide)+1;
+        return maxSide;
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        if(root== nullptr){
-            return 0;
-        }
+        if(!root) return 0;
 
-        int leftHe = diameterOfBinaryTree(root->left);
-        int rightHe = diameterOfBinaryTree(root->right);
-        int heig = getHeight(root->left) + getHeight(root->right);
 
-        int maxLen = max(heig,max(leftHe,rightHe));
-        return maxLen;
+        int leftSide = diameterOfBinaryTree(root->left);
+        int rightSide = diameterOfBinaryTree(root->right);
+        int hei = maxHeight(root->left) + maxHeight(root->right);
+        
+
+        int ans = max(hei, max(leftSide,rightSide));
+
+        return ans;
+
     }
 };
