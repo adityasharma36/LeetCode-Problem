@@ -11,40 +11,19 @@
  */
 class Solution {
 public:
-    bool ans = true;
-    void isSame(TreeNode* p ,TreeNode* q){
-        // base case pata nahiii
+    bool treeSame(TreeNode* p ,TreeNode*q){
+            if(!p && !q) return true;
+            if(p && !q) return false;
+            if(!p && q) return false;
+            if(p->val != q->val) return false;
+            
+            bool leftSide = treeSame(p->left,q->left);
+            bool rightSide = treeSame(p->right,q->right);
 
-        if(p == NULL && q== NULL){
+            return (leftSide && rightSide);
 
-            return;
-        }
-
-        if(p== NULL && q != NULL){
-            ans = false;
-            return;
-        }
-
-        if(p != NULL && q == NULL){
-            ans = false;
-            return;
-        }
-
-        if(p->val != q->val){
-            ans = false;
-            return;
-        }
-
-
-        // ek case me solve karoga or bakkii recursion handle karega
-        isSame(p->left,q->left);
-        isSame(p->right,q->right);
-
-
-       
-    }
+    } 
     bool isSameTree(TreeNode* p, TreeNode* q) {
-     isSame(p,q);
-     return ans;
+        return treeSame(p,q);
     }
 };
