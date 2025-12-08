@@ -1,35 +1,44 @@
 class Solution {
 public:
-    bool sortedAndRotated(vector<int>& nums) {
-        int n = nums.size();
-        int pivotIndex = -1;
-
-        // Find first drop
-        for (int i = 0; i < n - 1; i++) {
-            if (nums[i] > nums[i + 1]) {
-                pivotIndex = i;
+    bool checking(vector<int>& nums){
+        vector<int> newArr;
+        int ind = -1;
+        for(int i = 1;i<nums.size();i++){
+            if(nums[i]< nums[i-1]){
+                ind = i;
                 break;
             }
         }
 
-        // If no drop found, array is already sorted
-        if (pivotIndex == -1) return true;
+        cout<<"index "<< ind<<endl;
 
-        // Check first part before pivot
-        for (int i = 0; i < pivotIndex; i++) {
-            if (nums[i] > nums[i + 1]) return false;
+        if(ind == -1) return true;
+
+        for(int i = ind;i<nums.size();i++){
+            newArr.push_back(nums[i]);
         }
 
-        // Check second part after pivot
-        for (int i = pivotIndex + 1; i < n - 1; i++) {
-            if (nums[i] > nums[i + 1]) return false;
+        for(auto i :newArr){
+            cout<<i<<" ";
+        }
+        cout<<endl;
+
+        for(int i = 0;i<ind;i++){
+            newArr.push_back(nums[i]);
         }
 
-        // Last element should be <= first element for rotation
-        return nums[n - 1] <= nums[0];
+         for(auto i :newArr){
+            cout<<i<<" ";
+        }
+
+
+        for(int i = 1;i<nums.size();i++){
+            if(newArr[i]<newArr[i-1]) return false;
+        }
+
+        return true;
     }
-
     bool check(vector<int>& nums) {
-        return sortedAndRotated(nums);
+        return checking(nums);
     }
 };
