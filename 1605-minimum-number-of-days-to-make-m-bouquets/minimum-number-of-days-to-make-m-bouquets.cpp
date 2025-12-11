@@ -1,56 +1,57 @@
 class Solution {
 public:
-    int findMinVal(vector<int>& bloomDay){
-        int minVal = INT_MAX;
-        for(int i = 0;i<bloomDay.size();i++){
-            minVal = min(minVal,bloomDay[i]);
+    int minVal(vector<int>& nums){
+        int minVa = INT_MAX;
+        for(auto i: nums){
+            minVa = min(minVa , i);
         }
-        return minVal;
+        return minVa;
     }
-    int findMaxVal(vector<int>& bloomDay){
-        int maxVal = INT_MIN;
-        for(int i = 0;i<bloomDay.size();i++){
-            maxVal = max(maxVal,bloomDay[i]);
+
+    int maxVal(vector<int>& nums){
+        int maxVa = INT_MIN;
+        for(auto i: nums){
+            maxVa = max(maxVa,i);
         }
-        return maxVal;
+        return maxVa;
     }
-    bool isPossible(vector<int>& bloomDay,int m ,int k,int mid){
-        int total = 0;
-            int count = 0;
-        for(int i = 0;i<bloomDay.size();i++){
-                if(bloomDay[i]<= mid){
-                    count++;
-                }else{
-                    total+=count/k;
-                    count = 0;
-                }
-        }
-         total += count / k;
-        return total>= m;
-    }
-    int minimumDay(vector<int>& bloomDay,int m ,int k){
-        int answer = -1;
-        int start = findMinVal(bloomDay);
-        int end = findMaxVal(bloomDay);
-        if((long long)m * k > bloomDay.size()){
-            return -1;
-        } 
 
+    bool isPossible(vector<int>& ans,int mid ,int m ,int k){
+        int cnt = 0;
+        int an = 0;
 
-        while(start <= end){
-            int mid = start + (end-start)/2;
-
-            if(isPossible(bloomDay,m,k,mid)){
-                answer = mid;
-                end = mid-1;
-            }else{
-                start = mid+1;
+        for(int i : ans){
+            if(i <= mid){
+                cnt++;
+            } else {
+                an += (cnt / k);
+                cnt = 0;
             }
         }
-        return answer;
+        an += (cnt / k);
+
+        return an >= m;
     }
+
     int minDays(vector<int>& bloomDay, int m, int k) {
-        int answer = minimumDay(bloomDay,m,k);
-        return answer;
+
+        if ((long long)bloomDay.size() < (long long)m * k) 
+            return -1;   // FIXED
+
+        int start = minVal(bloomDay);
+        int end   = maxVal(bloomDay);
+        int ans = -1;
+
+        while(start <= end){
+            int mid = start + (end - start) / 2;
+
+            if(isPossible(bloomDay, mid, m, k)){
+                ans = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return ans;
     }
 };
