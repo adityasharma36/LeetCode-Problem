@@ -1,71 +1,38 @@
 class Solution {
 public:
-    int largestNumb(vector<int>& piles){
-
-        int largestNumber = INT_MIN;
-
-        for(int i = 0;i<piles.size();i++){
-
-            largestNumber = max(largestNumber,piles[i]);
-
+    int findMaxEle(vector<int> & nums){
+        int maxEle = INT_MIN;
+        for(auto i : nums){
+            maxEle = max(maxEle, i);
         }
-
-        return largestNumber;
-
-    }
-    long long minimumHours(vector<int>&piles,int divisor){
-
-        long long hours = 0;
-        
-        for(int i = 0;i<piles.size();i++){
-
-            // double answer = double(piles[i]/divisor);
-
-           hours += ((long long)piles[i] + divisor - 1) / divisor;
-
-        
-        }
-        
-        return hours;
-    
+        return maxEle;
     }
 
-    int kokoEating(vector<int>& piles,int h){
-    
-        int start = 1;
-    
-        int end = largestNumb(piles);
-
-        int miniHours = INT_MAX;
-    
-        while(start<=end){
-    
-            int mid = start + (end-start)/2;
-    
-            long long overAll = minimumHours(piles,mid);
-    
-            if(overAll<=h){
-    
-                miniHours = min(miniHours,mid);
-    
-                end = mid -1;
-    
-            }else{
-    
-                start = mid + 1;
-    
-            }
-    
+    bool isPossible(vector<int>& nums,int hours ,int mid){
+        int totalHour = 0;
+        for(int i = 0;i<nums.size();i++){
+            int time = (nums[i] + mid - 1) / mid;  // correct ceil division
+            totalHour += time;
+            if(totalHour > hours) return false;
         }
-    
-        return miniHours;
-    
+        return true;
     }
 
     int minEatingSpeed(vector<int>& piles, int h) {
-    
-        int minBanana = kokoEating(piles,h);
+        int start = 1;
+        int end = findMaxEle(piles);
+        int ans = 0;
 
-        return minBanana;
+        while(start <= end){
+            int mid = (end - start) / 2 + start;
+
+            if(isPossible(piles, h, mid)){
+                ans = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return ans;
     }
 };
