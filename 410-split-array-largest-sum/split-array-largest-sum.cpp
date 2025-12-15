@@ -1,45 +1,42 @@
 class Solution {
 public:
-    bool isPossible(vector<int>& nums,int k,int mid){
-        int sum = 0;
-        int possibleSplit = 1;
-
-        for(int i = 0;i<nums.size();i++){
-            if(nums[i]+ sum <= mid){
-                sum+= nums[i];
-            }else{
-                possibleSplit++;
-                sum = nums[i];
-            }
-        }
-        if(possibleSplit> k) return false;
-
-        return true;
-    }
-    int maxElement(vector<int>& nums){
+    int findMaxEle(vector<int>& nums){
         int maxEle = INT_MIN;
-        for(int i = 0;i<nums.size();i++){
-            maxEle = max(maxEle, nums[i]);
+        for(auto i : nums){
+            maxEle = max(maxEle,i);
         }
         return maxEle;
     }
-    int splitArrayLargestSum(vector<int>& nums,int k){
-        int start = maxElement(nums);
-        int end = accumulate(nums.begin(),nums.end(),0);
-        int answer = -1;
-        while(start<=end){
-            int mid = start + (end-start)/2;
-            if(isPossible(nums,k,mid)){
-                answer = mid;
-                end = mid-1;
+    bool isPossibe(vector<int>& nums,int k,int mid){
+        int cnt = 0;
+        int sum = 0;
+        for(auto i : nums){
+            if(sum+ i <= mid){
+                
+                sum+=i;
             }else{
-                start  = mid+1;
+                cnt++;
+                sum= i;
+                if(cnt>=k) return false;
             }
         }
-        return answer;
+        return true;
     }
     int splitArray(vector<int>& nums, int k) {
-        int answer = splitArrayLargestSum(nums,k);
-        return answer;
+        int start = findMaxEle(nums);
+        int end = accumulate(nums.begin(),nums.end(),0);
+
+        int ans = -1;
+        while(start<=end){
+            int mid = (end-start)/2 + start;
+
+            if(isPossibe(nums,k,mid)){
+                ans = mid;
+                end = mid-1;
+            }else{
+                start = mid+1;
+            }
+        }
+        return ans;
     }
 };
