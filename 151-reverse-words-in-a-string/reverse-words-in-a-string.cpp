@@ -1,32 +1,31 @@
 class Solution {
 public:
-    string reverseString(string s){
-        string answer = "";
-        stack<string> st;
+    string reverseWords(string s) {
+        vector<string> vc;
+        string temp = "";
         for(int i = 0;i<s.size();i++){
-            char ch = s[i];
 
-            if(ch == ' '){
-                if(!answer.empty()){
-                st.push(answer);
-                answer = "";
-                }
-            }else{
-                answer+=ch;
+            char ch = s[i];
+            
+          if(ch != ' '){
+            temp+=ch;
+          }else if(temp!= ""){
+            vc.push_back(temp);
+            temp = "";
+          }
+        }
+
+      if(temp != ""){
+            vc.push_back(temp);
+            temp = "";
+        }
+
+        for(int i = vc.size()-1;i>= 0;i--){
+            temp+=vc[i];
+            if(i !=0){
+            temp+=" ";
             }
         }
-         if(!answer.empty()) st.push(answer);
-        answer = "";
-        while(st.size()!=1){
-            answer+=st.top()+" ";
-            st.pop();
-        }
-        answer+=st.top();
-        st.pop();
-        return answer;
-    }
-    string reverseWords(string s) {
-        string answer = reverseString(s);
-        return answer;
+        return temp;
     }
 };
