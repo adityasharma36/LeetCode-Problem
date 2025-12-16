@@ -1,16 +1,13 @@
 class Solution {
 public:
-    string largestNumber(string numb){
-       for(int i = numb.size()-1;i>=0;i--){
-            if((numb[i]-'0') % 2 ==1){
-                return numb.substr(0,i+1);
+    string largestOddNumber(string num) {
+        for(int i = num.size()-1;i>=0;i--){
+            char ch = num[i];
+            int val = ch-'0';
+            if(val%2 == 1){
+                return num.substr(0,i+1);
             }
-       }
-       return "";
-        
-    }
-    string largestOddNumber(string numb) {
-        string answer = largestNumber(numb);
-        return answer;
+        }
+        return "";
     }
 };
