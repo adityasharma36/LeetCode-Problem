@@ -1,19 +1,17 @@
 class Solution {
 public:
-    int maximumNestingDepth(string s){
-        int maxNestDepth = INT_MIN;
-        stack<char> st;
-
-        for(int i = 0;i<s.size();i++){
-            if(s[i] == '(') st.push(s[i]);
-            else if(s[i]== ')') st.pop();
-
-            int stackSize = st.size();
-            maxNestDepth = max(maxNestDepth , stackSize);
-        }
-        return maxNestDepth;
-    }
     int maxDepth(string s) {
-        return maximumNestingDepth(s);
+        int cnt = 0;
+        int temp = 0;
+        for(int i= 0;i<s.size();i++){
+            if(s[i] == '('){
+                temp++;
+            }else if(s[i]== ')'){
+                cnt = max(cnt,temp);
+                temp--;
+            }
+        }
+        cnt = max(cnt, temp);
+        return cnt;
     }
 };
