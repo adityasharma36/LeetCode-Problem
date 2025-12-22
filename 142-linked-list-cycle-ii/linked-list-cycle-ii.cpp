@@ -8,22 +8,22 @@
  */
 class Solution {
 public:
-    ListNode* isCycle(ListNode* temp){
-        unordered_map<ListNode*,bool> um;
+    ListNode* unorMapSol(ListNode* head){
+        unordered_map<ListNode* , bool> um;
 
-        while(temp!= NULL){
-            ListNode* newTemp = temp;
+        ListNode* temp = head;
 
-           if(um[newTemp]==true){
-            return newTemp;
-           }
-           um[newTemp]= true;
-           temp = temp->next;
+        while(temp){
+
+            if(um[temp])return temp;
+
+            um[temp]= true;
+            temp = temp->next;
         }
         return NULL;
     }
     ListNode *detectCycle(ListNode *head) {
-        ListNode* temp = head;
-        return isCycle(head);
+        
+        return unorMapSol(head);
     }
 };
