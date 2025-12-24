@@ -10,64 +10,43 @@
  */
 class Solution {
 public:
-    bool isPalindr(ListNode* head){
-        if(head == NULL) return true;
-        vector<int>ans;
-        ListNode* temp = head;
-        while(temp!= NULL){
-            int value = temp->val;
-            ans.push_back(value);
-            temp = temp->next;
-        }
+    void reverseLL(ListNode*& prev,ListNode*& curr){
+        if(!curr) return;
 
-        int end = ans.size()-1;
-        int start = 0;
-        while(start<=end){
-            if(ans[start]!= ans[end]){
-                return false;
-            }
-            end--;
-            start++;
-        }
-        return true;
+        ListNode* ele = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = ele;
+        reverseLL(prev,curr);
     }
-    void reverseNode(ListNode*&curr,ListNode*& next){
-        if(curr== NULL) return;
-        ListNode* temp = curr->next;
-        curr->next = next;
-        next = curr;
-        curr= temp;
-        reverseNode(curr,next);
-    }
-    bool constSpace(ListNode* head){
-        bool answer = true;
+    bool palindromeCheck(ListNode* head){
+        
         ListNode* slow = head;
         ListNode* fast = head;
-        while(fast->next != NULL && fast->next->next != NULL){
+
+        while(fast->next && fast->next->next){
             slow = slow->next;
             fast = fast->next->next;
         }
-        ListNode * prev = NULL;
+
+        ListNode* prev = NULL;
         ListNode* curr = slow->next;
-        reverseNode(curr,prev);
 
-        ListNode * newList = prev;
-        ListNode* newNode  = head;
+        reverseLL(prev,curr);
 
-        while(newList!= NULL){
-            if(newList->val != newNode->val){
-                answer = false;
-                break;
-            }
 
-            newList= newList->next;
-            newNode = newNode->next;
+        ListNode* temp = head;
+
+        while(prev && temp){
+            if(prev->val != temp->val) return false;
+
+            prev = prev->next;
+            temp= temp->next;
         }
-        return answer;
+        return true;
     }
     bool isPalindrome(ListNode* head) {
-        // return withArrayMethod(head);
-        ListNode* temp = head;
-        return constSpace(temp);
+        if(!head) return true;
+        return palindromeCheck(head);
     }
 };
