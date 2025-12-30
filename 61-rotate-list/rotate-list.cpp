@@ -1,60 +1,55 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    // helper to reverse part of array
-    void swapArray(vector<int>& ans,int start ,int end){
-        while(start <= end){
-            swap(ans[start], ans[end]);
-            start++;
-            end--;
+    void reverseLL(ListNode* &head) {
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+
+        while (curr) {
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
         }
-    }
-
-    ListNode* rotateNode(ListNode* head,int k){
-        if(head == NULL || head->next == NULL || k == 0) return head;
-
-        // copy linked list values into vector
-        vector<int> ans;
-        ListNode* temp = head;
-        while(temp != NULL){
-            ans.push_back(temp->val);
-            temp = temp->next;
-        }
-
-        int n = ans.size();
-
-        k = k % n;   
-
-        if(k == 0) return head; // no rotation needed
-
-        // Reverse method for right rotation
-        swapArray(ans, 0, n-1);
-        swapArray(ans, 0, k-1);
-        swapArray(ans, k, n-1);
-
-        // put back value into linked list
-
-        temp = head;
-        int index = 0;
-        while(temp != NULL && index < n){
-            temp->val = ans[index];
-            index++;
-            temp = temp->next;
-        }
-
-        return head;   //  return head
+        head = prev;   // 🔥 IMPORTANT FIX
     }
 
     ListNode* rotateRight(ListNode* head, int k) {
-        return rotateNode(head,k);
+        if (!head || !head->next || k == 0) return head;
+
+        // Step 1: Find length
+        int len = 0;
+        ListNode* temp = head;
+        while (temp) {
+            len++;
+            temp = temp->next;
+        }
+
+        k = k % len;
+        if (k == 0) return head;
+
+        // Step 2: Reverse whole list
+        reverseLL(head);
+
+        // Step 3: Split after k nodes
+        temp = head;
+        for (int i = 1; i < k; i++) {
+            temp = temp->next;
+        }
+
+        ListNode* second = temp->next;
+        temp->next = NULL;
+
+        // Step 4: Reverse both parts
+        reverseLL(head);
+        reverseLL(second);
+
+        // Step 5: Join lists
+        temp = head;
+        while (temp->next) {
+            temp = temp->next;
+        }
+        temp->next = second;
+
+        return head;
     }
 };
