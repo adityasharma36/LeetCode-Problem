@@ -1,25 +1,26 @@
 class Solution {
 public:
-    void genParenthesis(int n,vector<string>&ans, int open,int close ,string answer){
-        if(open == 0 && close == 0)
-         {
-            ans.push_back(answer);
-            return ;
-        } 
-
-        if(open>0){
-            genParenthesis(n,ans,open-1, close ,answer+"(");
+    void genParen(vector<string>&ans,string& st,int open,int close,int n){
+        if(open == n && close == n){
+            ans.push_back(st);
+            return;
         }
-
-        if(close >0  && close > open){
-            genParenthesis(n,ans,open,close-1,answer+")");
+        if(open<n){
+            st.push_back('(');
+            genParen(ans,st,open+1,close,n);
+            st.pop_back();
         }
-
+        if(close< open){
+            st.push_back(')');
+            genParen(ans,st,open,close+1,n);
+            st.pop_back();
+        }
+        
     }
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        string answer;
-         genParenthesis(n,ans,n,n,answer);
-         return ans;
+        string st = "";
+        genParen(ans,st,0,0,n);
+        return ans;
     }
 };
