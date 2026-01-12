@@ -1,42 +1,54 @@
 class Solution {
 public:
-    int findUnsortedSubarray(vector<int>& nums) {
+    int sortedSubArray(vector<int>& nums){
+
         int left = 0;
         int right = nums.size()-1;
-        int minEle = INT_MAX;
-        int maxEle = INT_MIN;
-        int n = nums.size();
-
+        int leftMin = INT_MAX;
+        int rightMax = INT_MIN;
         bool flag = false;
-        for(int i= 1;i<nums.size();i++){
-            if(nums[i]< nums[i-1]){
-                flag = true;
-            }
-            if(flag){
-            minEle = min(nums[i],minEle);
-        }
-        }
 
+        for(int i  = 1;i< nums.size();i++){
+
+            if(nums[i]< nums[i-1]){
+
+                flag = true;
+
+            }
+
+            if(flag){
+
+                leftMin  = min(leftMin,nums[i]);
+
+            }
+        }
+        if(leftMin == INT_MAX) return 0;
         flag = false;
 
-        for(int i= nums.size()-2;i>=0;i--){
+        for(int i = nums.size()-2;i>= 0;i--){
+
             if(nums[i]>nums[i+1]){
                 flag = true;
             }
+
             if(flag){
-                maxEle = max(nums[i],maxEle);
+                rightMax = max(rightMax,nums[i]);
             }
+
         }
 
-           while(left < n && nums[left] <= minEle){
+        while(left< nums.size() && nums[left]<=leftMin){
             left++;
         }
-
-        // find correct right boundary
-        while(right >= 0 && nums[right] >= maxEle){
+        while(right>= 0 && nums[right]>=rightMax){
             right--;
         }
 
-        return right-left> 0 ? right-left+1: 0;
+        return right-left >0 ? right-left+1:0;
+
+
+    }
+    int findUnsortedSubarray(vector<int>& nums) {
+        return sortedSubArray(nums);
     }
 };
