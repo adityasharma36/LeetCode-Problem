@@ -1,20 +1,22 @@
 class Solution {
 public:
-    void putAllSubSets(vector<int>& nums,int index,vector<vector<int>>& answer,vector<int>& temp){
-        if(index == nums.size()){
-            answer.push_back(temp);
+    void allSubSets(vector<int>& nums,vector<vector<int>>& ans,vector<int>& temp,int i){
+        if(i>=nums.size()){
+            ans.push_back(temp);
             return;
         }
-        temp.push_back(nums[index]);
-        putAllSubSets(nums,index+1,answer,temp);
 
+        int ele = nums[i];
+        temp.push_back(ele);
+        allSubSets(nums,ans,temp,i+1);
         temp.pop_back();
-        putAllSubSets(nums,index+1,answer,temp);
+        allSubSets(nums,ans,temp,i+1);
     }
     vector<vector<int>> subsets(vector<int>& nums) {
-     vector<vector<int>> answer;
-     vector<int> temp;
-     putAllSubSets(nums,0,answer,temp);
-     return answer;   
+        vector<vector<int>> ans;
+        vector<int>temp;
+        int i = 0;
+        allSubSets(nums,ans,temp,i);
+        return ans;
     }
 };
