@@ -28,6 +28,22 @@ public:
         return dp[start];
 
     }
+    int tabu(vector<int>&nums,int start,int end){
+
+        int n = nums.size();
+
+        vector<int>dp(n+2,0);
+
+        for(int i = end;i>=start;i--){
+
+            int incl = nums[i] + dp[i+2];
+            int excl = dp[i+1];
+  
+        
+            dp[i] = max(incl,excl);
+        }
+        return dp[start];
+    }
     int rob(vector<int>& nums) {
 
         if(nums.size()==1) return nums[0];
@@ -35,11 +51,21 @@ public:
         
         // int firstLast = robber(nums,0,nums.size()-2);
         // int secondLast = robber(nums,1,nums.size()-1);
+        // return max(firstLast,secondLast);
 
-        vector<int>dp1(nums.size(),-1),dp2(nums.size(),-1);
+        // Part ----> 1 Memoziation 
 
-        int firstLast = Memo(nums,0,nums.size()-2,dp1);
-        int secondLast = Memo(nums,1,nums.size()-1,dp2);
+        // vector<int>dp1(nums.size(),-1),dp2(nums.size(),-1);
+
+        // int firstLast = Memo(nums,0,nums.size()-2,dp1);
+        // int secondLast = Memo(nums,1,nums.size()-1,dp2);
+        // return max(firstLast,secondLast);
+
+        int firstLast = tabu(nums,0,nums.size()-2);
+        int secondLast = tabu(nums,1,nums.size()-1);
+
         return max(firstLast,secondLast);
+
+
     }
 };
