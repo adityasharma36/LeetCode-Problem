@@ -33,12 +33,18 @@ public:
         vector<vector<bool>> dp(target + 1, vector<bool>(nums.size()+1,false ));
 
         for(int i = 0;i<=nums.size();i++){
+
             dp[0][i] = true;
+        
         }
         for (int sum = 1; sum <= target; sum++) {
+
         for (int start = nums.size() - 1; start >= 0; start--) {
+
             bool take = false;
+
             if (nums[start] <= sum) {
+
                 take = dp[sum - nums[start]][start + 1];
             }
             bool skip = dp[sum][start + 1] ;
@@ -72,7 +78,7 @@ public:
                 }
                 next = curr;
            }
-           return curr[target];
+           return next[target];
     }
 
     bool canPartition(vector<int>& nums) {
