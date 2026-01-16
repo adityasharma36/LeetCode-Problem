@@ -41,13 +41,38 @@ public:
             if (nums[start] <= sum) {
                 take = dp[sum - nums[start]][start + 1];
             }
-            bool skip = dp[sum][start + 1];
+            bool skip = dp[sum][start + 1] ;
 
             dp[sum][start] = take || skip;
         }
     }
         return dp[target][0];
 
+    }
+    bool spaceOptimise(vector<int>&nums){
+         int total = accumulate(nums.begin(), nums.end(), 0);
+         if (total % 2 != 0) return false;
+        int target = total / 2;
+        vector<bool>curr(target+1,false);
+        vector<bool>next(target+1,false);
+        curr[0] = true;
+        next[0] = true;
+           for (int start = nums.size() - 1; start >= 0; start--) {
+                 for (int sum = 1; sum <= target; sum++) {
+
+                    bool take = false;
+
+                    if (nums[start] <= sum) {
+
+                        take = next[sum - nums[start]];
+                    }
+                    bool skip = next[sum] ;
+
+                    curr[sum] = take || skip;
+                }
+                next = curr;
+           }
+           return curr[target];
     }
 
     bool canPartition(vector<int>& nums) {
@@ -58,6 +83,7 @@ public:
         vector<vector<int>> dp(target + 1, vector<int>(nums.size(), -1));
 
         // return memo(nums, target, 0, dp);
-        return solveByTab(nums);
+        // return solveByTab(nums);
+        return spaceOptimise(nums);
     }
 };
