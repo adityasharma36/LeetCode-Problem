@@ -81,6 +81,25 @@ public:
            return next[target];
     }
 
+    bool spaceOpt2(vector<int>& nums){
+         int total = accumulate(nums.begin(), nums.end(), 0);
+         if (total % 2 != 0) return false;
+        int target = total / 2;
+        vector<bool>curr(target+1,false);
+        curr[0]= true;
+        
+        for (int start = nums.size() - 1; start >= 0; start--) {
+
+            for (int sum = target; sum >= nums[start]; sum--) {
+
+                curr[sum] = curr[sum] || curr[sum-nums[start]];
+         }
+        }
+
+        return curr[target];
+    
+    }
+
     bool canPartition(vector<int>& nums) {
         int total = accumulate(nums.begin(), nums.end(), 0);
         if (total % 2 != 0) return false;
@@ -90,6 +109,7 @@ public:
 
         // return memo(nums, target, 0, dp);
         // return solveByTab(nums);
-        return spaceOptimise(nums);
+        // return spaceOptimise(nums);
+        return spaceOpt2(nums);
     }
 };
