@@ -1,55 +1,54 @@
 class Solution {
 public:
-    // bool checking(vector<int>& nums){
-    //     vector<int> newArr;
-    //     int ind = -1;
-    //     for(int i = 1;i<nums.size();i++){
-    //         if(nums[i]< nums[i-1]){
-    //             ind = i;
-    //             break;
+//  in---> inbuild fnc  
+    // bool inbuildFnc(vector<int>& nums){
+        
+    //     sort(nums.begin(),nums.end());
+    
+    //     for(int i = 0;i<nums.size()-1;i++){
+    //         if(nums[i]> nums[i+1]){
+    //             return false;
     //         }
     //     }
-
-    //     cout<<"index "<< ind<<endl;
-
-    //     if(ind == -1) return true;
-
-    //     for(int i = ind;i<nums.size();i++){
-    //         newArr.push_back(nums[i]);
-    //     }
-
-    //     for(auto i :newArr){
-    //         cout<<i<<" ";
-    //     }
-    //     cout<<endl;
-
-    //     for(int i = 0;i<ind;i++){
-    //         newArr.push_back(nums[i]);
-    //     }
-
-    //      for(auto i :newArr){
-    //         cout<<i<<" ";
-    //     }
-
-
-    //     for(int i = 1;i<nums.size();i++){
-    //         if(newArr[i]<newArr[i-1]) return false;
-    //     }
-
     //     return true;
-    // }   
-
-    bool checking(vector<int>& nums){
-        int count = 0;
-        for(int i = 0;i<nums.size();i++){
-            if(nums[i]> nums[(i+1) % nums.size()]){
-                count++;
-            }
-            if(count>1) return false;
+    
+    // }
+    void swappingFnc(vector<int>& nums,int start,int end){
+        while(start<=end){
+            swap(nums[start],nums[end]);
+            start++;
+            end--;
         }
-        return true;
+    }
+
+    bool swappingMth(vector<int>& nums){
+
+        int swappingIndex = -1;
+        for(int i = 1 ;i<nums.size();i++){
+            if(nums[i] < nums[i-1]){
+                swappingIndex = i;
+                break;
+            }
+        }
+
+        if(swappingIndex == -1){
+            return true;
+        }
+        int swapingVal = swappingIndex % (nums.size());
+        
+        swappingFnc(nums,0, swapingVal-1);
+        swappingFnc(nums,swapingVal,nums.size()-1);
+        swappingFnc(nums,0,nums.size()-1);
+
+          for(int i = 1 ;i<nums.size();i++){
+            if(nums[i] < nums[i-1]){
+                return false;
+            }
+        }
+    return true;
     }
     bool check(vector<int>& nums) {
-        return checking(nums);
+        // return inbuildFnc(nums);
+        return swappingMth(nums);
     }
 };
