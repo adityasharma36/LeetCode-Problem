@@ -1,14 +1,13 @@
 class Solution {
 public:
-    int singleNumb(vector<int>& nums){
-        int single = 0;
+    int singleFnc(vector<int>& nums){
+        int singleEle = 0;
         for(int i = 0;i<nums.size();i++){
-            single^=nums[i];
+            singleEle^= nums[i];
         }
-        return single;
+        return singleEle;
     }
     int singleNumber(vector<int>& nums) {
-        int answer = singleNumb(nums);
-        return answer;
+        return singleFnc(nums);
     }
 };
