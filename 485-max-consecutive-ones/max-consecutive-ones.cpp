@@ -1,21 +1,23 @@
 class Solution {
 public:
-    int consecutiveOne(vector<int>& nums){
-        int count = 0;
-        int temp =0;
+    int maxConFnc(vector<int>& nums){
+        int cnt = 0;
+        int maxLen = 0;
+
         for(int i = 0;i<nums.size();i++){
-            if(nums[i] != 1){
-                count = max(count , temp);
-                temp = 0;
-            }else{
-                temp++;
+            if(nums[i]==0){
+                maxLen = max(cnt,maxLen);
+                cnt= 0;
+            }
+            else{
+                cnt++;
             }
         }
-        count = max(count,temp);
-        return count;
+        maxLen = max(cnt,maxLen);
+
+        return maxLen;
     }
     int findMaxConsecutiveOnes(vector<int>& nums) {
-        int answer = consecutiveOne(nums);
-        return answer;
+        return maxConFnc(nums);
     }
 };
