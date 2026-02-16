@@ -1,23 +1,18 @@
 class Solution {
 public:
-    int duplicateFromSorted(vector<int>& nums){
+    int removeDuplicateFnc(vector<int>& nums){
         int start = 0;
-        int mid = 1;
-
-        while(nums.size()> mid){
-            if(nums[start] != nums[mid]){
-            
+        int mid = 0;
+        while(mid<nums.size()){
+            if(nums[start]!= nums[mid]){
                  start++;
-                swap(nums[start],nums[mid]);
+                 swap(nums[start],nums[mid]);
             }
             mid++;
         }
-        return start +1;
+        return start+1;
     }
     int removeDuplicates(vector<int>& nums) {
-        int answer = duplicateFromSorted(nums);
-        return answer;
-        
-        
+        return removeDuplicateFnc(nums);
     }
 };
