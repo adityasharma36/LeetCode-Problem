@@ -1,10 +1,9 @@
 class Solution {
 public:
-    void moveZero(vector<int>& nums){
+    void moveZeroFnc(vector<int>& nums){
         int start = 0;
         int mid = 0;
-        int len = nums.size();
-        while(mid<len){
+        while(mid<nums.size()){
             if(nums[mid] != 0){
                 swap(nums[start],nums[mid]);
                 start++;
@@ -13,6 +12,6 @@ public:
         }
     }
     void moveZeroes(vector<int>& nums) {
-        moveZero(nums);
+        moveZeroFnc(nums);
     }
 };
