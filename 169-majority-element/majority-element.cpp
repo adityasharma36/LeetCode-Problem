@@ -1,32 +1,21 @@
 class Solution {
 public:
-    int majorityEle(vector<int>& nums){
-        int ele = 0;
-        int count = 0;
+    int majorityEleFnc(vector<int>& nums){
+        int majorityEle = 0;
+        int majorityCnt = 0;
         for(int i = 0;i<nums.size();i++){
-            if(count == 0 ){
-                ele = nums[i];
-                count = 1;
-            }else if(ele == nums[i]){
-                count++;
-            }
-            else {
-                count--;
+            if(majorityCnt==0){
+                majorityEle = nums[i];
+                majorityCnt++;
+            }else if(majorityEle != nums[i]){
+                majorityCnt--;
+            }else{
+                majorityCnt++;
             }
         }
-        count = 0;
-        for(int i = 0;i<nums.size();i++){
-            if(ele == nums[i]){
-                count++;
-            }
-        }
-        int len = nums.size()/2;
-        if(count>=len) return ele;
-
-        return -1;
+        return majorityEle ;
     }
     int majorityElement(vector<int>& nums) {
-        int answer = majorityEle(nums);
-        return answer;
+        return majorityEleFnc(nums);
     }
 };
