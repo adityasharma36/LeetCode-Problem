@@ -17,7 +17,27 @@ public:
         longest = max(longest,cnt);
         return longest;
     }
+
+    int optimseFnc(vector<int>& nums){
+        // unordered_map<int,int>um;
+      unordered_set<int>st(nums.begin(),nums.end());
+
+        int longestCon = 0;
+        for(auto num: st){
+            if(st.find(num-1) == st.end()){
+                int current = num;
+                int tempMax = 1;
+                while( st.find(current+1) != st.end()){
+                    current++;
+                    tempMax++;
+                }
+                longestCon = max(longestCon,tempMax);
+            }
+        }
+        return longestCon;
+    }
     int longestConsecutive(vector<int>& nums) {
-        return consecutiveFnc(nums);
+        // return consecutiveFnc(nums);
+        return optimseFnc(nums);
     }
 };
