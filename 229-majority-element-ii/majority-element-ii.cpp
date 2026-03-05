@@ -1,44 +1,56 @@
 class Solution {
 public:
-    vector<int> majorityEle(vector<int>& nums){
-        int cnt1 = 0;
-        int cnt2 = 0;
-        int ele1 = 0;
-        int ele2 = 0;
+    vector<int>majorityEleFnc(vector<int>& nums){
+        vector<int> ans;
+
+        int firstEle = INT_MIN;
+        int firstCnt = 0;
+
+        int secondEle = INT_MIN;
+        int secondCnt = 0;
+
 
         for(int i = 0;i<nums.size();i++){
-            if(cnt1 == 0 && nums[i] != ele2){
-                cnt1 = 1;
-                ele1 = nums[i];
+            if(firstCnt == 0 && secondEle != nums[i]){
+                firstEle = nums[i];
+                firstCnt++;
+            }else if(secondCnt == 0 && firstEle != nums[i]){
+                secondEle = nums[i];
+                secondCnt++;
             }
-            else if(cnt2 == 0 && nums[i] != ele1){
-                cnt2 = 1;
-                ele2 = nums[i];
-            }
-            else if(nums[i]==ele1){
-                cnt1++;
-            }
-            else if(nums[i]==ele2){
-                cnt2++;
+            else if(firstEle== nums[i]){
+                firstCnt++;
+            }else if(secondEle == nums[i]){
+                secondCnt++;
             }else{
-                cnt1--;
-                cnt2--;
+                firstCnt--;
+                secondCnt--;
             }
         }
-        cnt1 = 0;
-        cnt2 = 0;
-        for(int i = 0;i<nums.size();i++){
-            if(ele1 == nums[i]) cnt1++;
-            else if(ele2 == nums[i]) cnt2++;
+
+        firstCnt = 0;
+        for(auto i:nums){
+            if(firstEle == i){
+                firstCnt++;
+            }
         }
-        int len = nums.size()/3;
-        vector<int> answer;
-        if(cnt1> len) answer.push_back(ele1);
-        if(cnt2> len) answer.push_back(ele2);
-        return answer;
+
+        secondCnt = 0;
+        for(auto i:nums){
+            if(secondEle == i){
+                secondCnt++;
+            }
+        }
+        if(firstCnt> nums.size()/3){
+            ans.push_back(firstEle);
+        }
+
+         if(secondCnt> nums.size()/3){
+            ans.push_back(secondEle);
+        }
+        return ans;
     }
     vector<int> majorityElement(vector<int>& nums) {
-        vector<int> answer = majorityEle(nums);
-        return answer;
+        return majorityEleFnc(nums);
     }
 };
