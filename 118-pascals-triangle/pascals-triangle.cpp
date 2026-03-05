@@ -1,34 +1,25 @@
 class Solution {
 public:
-    vector<int> pascalTriangle(int row){
-        
+    vector<int>pascalTriFnc(int numRows){
+        vector<int>temp;
+        temp.push_back(1);
         int ans = 1;
 
-        vector<int>insertArr;
+        for(int col = 1;col<numRows;col++){
 
-        insertArr.push_back(1);
-
-        for(int col = 1;col<row;col++){
-
-            ans = ans*(row-col);
-
+            ans = ans*(numRows-col);
             ans = ans/col;
-
-            insertArr.push_back(ans);
+            temp.push_back(ans);
         }
-        return insertArr;
+        return temp;
     }
     vector<vector<int>> generate(int numRows) {
-
-        vector<vector<int>> Arr;
+        vector<vector<int>>ans;
 
         for(int i = 1;i<=numRows;i++){
-
-            Arr.push_back(pascalTriangle(i));
-
+            vector<int>temp = pascalTriFnc(i);
+            ans.push_back(temp);
         }
-
-        return Arr;
-        
+        return ans;
     }
 };
