@@ -1,49 +1,26 @@
 class Solution {
 public:
-    string outerParent(string s){
+    string removerParenthese(string s){
         int cnt = 0;
-        string ans = "";
-        for(int i = 0;i<s.size();i++){
-            
-            char ch = s[i];
-
+        string newString;
+        for(auto ch: s){
             if(ch == '('){
-                if(cnt>0){
-                    ans+=ch;
+                if(cnt>=1){
+                    newString.push_back(ch);
                 }
                 cnt++;
             }else{
+                if(cnt>1){
+                    newString.push_back(ch);
+                    
+                }
                 cnt--;
-                if(cnt>0){
-                    ans+=ch;
-                }
             }
         }
-        return ans;
-    }
-    string stackMethod(string s){
-        stack<char> st;
-        string ans = "";
-        for(int i = 0;i<s.size();i++){
-            char ch = s[i];
-
-            if(ch == '('){
-                if(!st.empty()){
-                    ans+=ch;
-                }
-                st.push(ch);
-            }else{
-                st.pop();
-                if(!st.empty()){
-                    ans+=ch;
-                }
-            }
-        }
-        return ans;
+        return newString;
     }
     string removeOuterParentheses(string s) {
-        // string ans = outerParent(s);
-        string ans = stackMethod(s);
-        return ans;
+        string removeOuter = removerParenthese(s);
+        return removeOuter;
     }
 };
