@@ -3,18 +3,13 @@ public:
     bool isIsomorphic(string s, string t) {
         if(s.size() != t.size()) return false;
 
-        unordered_map<char,char> m1;
-        unordered_map<char,char> m2;
+        vector<int> m1(256, -1), m2(256, -1);
 
         for(int i = 0; i < s.size(); i++){
-            char c1 = s[i];
-            char c2 = t[i];
+            if(m1[s[i]] != m2[t[i]]) return false;
 
-            if(m1.count(c1) && m1[c1] != c2) return false;
-            if(m2.count(c2) && m2[c2] != c1) return false;
-
-            m1[c1] = c2;
-            m2[c2] = c1;
+            m1[s[i]] = i;
+            m2[t[i]] = i;
         }
 
         return true;
