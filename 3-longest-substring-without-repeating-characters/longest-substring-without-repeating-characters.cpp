@@ -22,8 +22,20 @@ public:
 
         return maxSub;
     }
-
+    int longestSubWind(string s){
+        vector<int>temp(256,-1);
+        int longestSub = 0;
+        int left = 0;
+        for(int right = 0;right<s.size();right++){
+            if(temp[s[right]]>=left){
+                left = temp[s[right]] +1;
+            }
+            temp[s[right]]=right;
+            longestSub= max(longestSub,right-left+1);
+        }
+        return longestSub;
+    }
     int lengthOfLongestSubstring(string s) {
-        return longestSub(s);
+        return longestSubWind(s);
     }
 };
