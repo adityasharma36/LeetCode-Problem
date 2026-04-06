@@ -1,33 +1,44 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    ListNode* oddEvenList(ListNode* head) {
+
+    // Reverse linked list
+    ListNode* reverseEvenLL(ListNode* head){
+        ListNode* prev = nullptr;
+        while(head){
+            ListNode* nextNode = head->next;
+            head->next = prev;
+            prev = head;
+            head = nextNode;
+        }
+        return prev;
+    }
+
+    ListNode* listOddEven(ListNode* head){
         if(!head || !head->next) return head;
 
-        ListNode* oddNode = head;
-        ListNode* evenNode = head->next;
-        ListNode* even = evenNode;
+        ListNode* odd = head;
+        ListNode* even = head->next;
+        ListNode* evenHead = even;
 
-        while(evenNode && evenNode->next){
+        // Step 1: separate odd and even
+        while(even && even->next){
+            odd->next = even->next;
+            odd = odd->next;
 
-            oddNode->next = evenNode->next;
-            oddNode = evenNode->next;
-
-            evenNode->next = oddNode->next;
-            evenNode = oddNode->next;
+            even->next = odd->next;
+            even = even->next;
         }
 
-    oddNode->next = even;
-    return head;
+    
        
+
+        // Step 3: attach
+        odd->next = evenHead;
+
+        return head;
+    }
+
+    ListNode* oddEvenList(ListNode* head) {
+        return listOddEven(head);
     }
 };
