@@ -10,21 +10,19 @@
  */
 class Solution {
 public:
-    ListNode* midNode(ListNode *& head){
-        ListNode* toto = head;
-        ListNode* rabbit = head;
-
-        while(rabbit!= NULL){
-            rabbit = rabbit->next;
-            if(rabbit != NULL){
-                rabbit = rabbit->next;
-                toto = toto->next;
+    ListNode* nodeMiddle(ListNode* head){
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next){
+            fast = fast->next;
+            slow = slow->next;
+            if(fast->next){
+                fast = fast->next;
             }
-            
         }
-        return toto;
+        return slow;
     }
     ListNode* middleNode(ListNode* head) {
-        return midNode(head);
+        return nodeMiddle(head);
     }
 };
