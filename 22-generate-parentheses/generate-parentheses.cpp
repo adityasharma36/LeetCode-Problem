@@ -1,26 +1,39 @@
 class Solution {
 public:
-    void genParen(vector<string>&ans,string& st,int open,int close,int n){
-        if(open == n && close == n){
-            ans.push_back(st);
+    void parenthesisGenerate(int n,vector<string>&genPar,string& temp,int opnBr,int clsBr){
+
+        if(opnBr == n && clsBr==n){
+
+            genPar.push_back(temp);
+
             return;
+
         }
-        if(open<n){
-            st.push_back('(');
-            genParen(ans,st,open+1,close,n);
-            st.pop_back();
+
+        if(opnBr<n){
+
+            temp.push_back('(');
+
+            parenthesisGenerate(n,genPar,temp,opnBr+1,clsBr);
+
+            temp.pop_back();
+
         }
-        if(close< open){
-            st.push_back(')');
-            genParen(ans,st,open,close+1,n);
-            st.pop_back();
+        if(clsBr<opnBr){
+
+            temp.push_back(')');
+
+            parenthesisGenerate(n,genPar,temp,opnBr,clsBr+1);
+
+            temp.pop_back();
+
         }
-        
+
     }
     vector<string> generateParenthesis(int n) {
-        vector<string> ans;
-        string st = "";
-        genParen(ans,st,0,0,n);
-        return ans;
+        vector<string>genPar;
+        string temp = "";
+        parenthesisGenerate(n,genPar,temp,0,0);
+        return genPar;
     }
 };
