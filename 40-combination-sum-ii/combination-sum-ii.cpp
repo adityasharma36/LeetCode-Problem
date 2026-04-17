@@ -1,60 +1,41 @@
 class Solution {
 public:
-    void sumCombination(vector<int>& cand, int target, set<vector<int>>& st,
-                        int start, int end, vector<int>& temp) {
+    void sumCombination(vector<int>& candi, int target, vector<int>& temp,
+                        int i, vector<vector<int>>& ans) {
 
-        if(target == 0){
-
-            st.insert(temp);
-
+        if (target == 0) {
+            ans.push_back(temp);
             return;
         }
 
-        for(int i = start; i < end; i++){
+        for (int j = i; j < candi.size(); j++) {
 
-            if(cand[i] <= target){
+            // ✅ correct duplicate handling
+            if (j > i && candi[j] == candi[j - 1]) continue;
 
-                temp.push_back(cand[i]);
+            int sum = candi[j];
 
-                sumCombination(cand, target - cand[i], st, i + 1, end, temp);
+            if (target - sum >= 0) {
+
+                temp.push_back(sum);
+
+                sumCombination(candi, target - sum, temp, j + 1, ans);
 
                 temp.pop_back();
+            } else {
+                break; // 🔥 optimization since array is sorted
             }
         }
     }
-    void memo(vector<int>& cand, int target, int start, int end, vector<int>& temp,vector<vector<int>>&ans){
-            if(target == 0){
-                ans.push_back(temp);
-                return;
-            }
-            for(int i = start;i<end;i++){
 
-                    if(i>start && cand[i]== cand[i-1]) continue;
-
-                    if(cand[i]>target) break;
-
-                    temp.push_back(cand[i]);
-                    memo(cand,target-cand[i],i+1,end,temp,ans);
-                    temp.pop_back();
-            }
-
-        }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
 
-        sort(candidates.begin(), candidates.end()); // ✅ important
+        sort(candidates.begin(), candidates.end());
 
-        set<vector<int>> st;
-
+        vector<vector<int>> ans;
         vector<int> temp;
 
-        int n = candidates.size();
-
-
-        // sumCombination(candidates, target, st, 0, candidates.size(), temp);
-
-        vector<vector<int>>ans;
-
-        memo(candidates,target,0,n,temp,ans);
+        sumCombination(candidates, target, temp, 0, ans);
 
         return ans;
     }
