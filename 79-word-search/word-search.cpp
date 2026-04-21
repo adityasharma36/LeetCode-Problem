@@ -1,29 +1,38 @@
 class Solution {
 public:
+    bool dfs(vector<vector<char>>& board, string& word,
+             vector<vector<bool>>& visited, int x, int y, int k) {
 
-    bool checking(vector<vector<char>>& board, string word,int i,int j ,int k){
-        if(k == word.size()) return true;
+        if (k == word.size()) return true;
 
-        if(i<0 || i>=board.size() || j<0 || j>=board[0].size() || board[i][j] != word[k]) return false;
+        // boundary + visited + mismatch check
+        if (x < 0 || y < 0 || x >= board.size() || y >= board[0].size() ||
+            visited[x][y] || board[x][y] != word[k]) {
+            return false;
+        }
 
-        board[i][j]= '0';
+        visited[x][y] = true;
 
-        bool status = checking(board,word,i+1,j,k+1) ||
-                        checking(board,word,i,j+1,k+1) ||
-                        checking(board,word,i-1,j,k+1)||
-                        checking(board,word,i,j-1,k+1);
+        bool found =
+            dfs(board, word, visited, x + 1, y, k + 1) ||
+            dfs(board, word, visited, x - 1, y, k + 1) ||
+            dfs(board, word, visited, x, y + 1, k + 1) ||
+            dfs(board, word, visited, x, y - 1, k + 1);
 
-        board[i][j]= word[k];
+        visited[x][y] = false; // backtrack
 
-        return status;
+        return found;
     }
-    bool exist(vector<vector<char>>& board, string word) {
-        
-        if(word == "") return false;
 
-        for(int i = 0;i<board.size();i++){
-            for(int j = 0;j<board[0].size();j++){
-                if(board[i][j] == word[0] && checking(board,word,i,j,0)){
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dfs(board, word, visited, i, j, 0)) {
                     return true;
                 }
             }
