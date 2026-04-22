@@ -1,31 +1,42 @@
 class Solution {
 public:
-    vector<int> arr;
-    vector<vector<string>> ans;
-    int cnt = 0;
-    void helper(int row, int n) {
-        if (row == n) cnt++;
-        for (int col = 0; col < n; col++) {
-            if (issafe(row, col, n)) {
-                arr[row] = col;
-                helper(row + 1, n);
+    unordered_map<int,bool> rowCheck;
+    unordered_map<int,bool> lowerDiagonalCheck;
+    unordered_map<int,bool> upperDiagonalCheck;
+
+    int count = 0;
+
+    bool isPossible(int row, int col) {
+        if(rowCheck[row]) return false;
+        if(lowerDiagonalCheck[row + col]) return false;
+        if(upperDiagonalCheck[row - col]) return false;
+        return true;
+    }
+
+    void solve(int n, int col) {
+        if(col >= n) {
+            count++;
+            return;
+        }
+
+        for(int row = 0; row < n; row++) {
+            if(isPossible(row, col)) {
+
+                rowCheck[row] = true;
+                lowerDiagonalCheck[row + col] = true;
+                upperDiagonalCheck[row - col] = true;
+
+                solve(n, col + 1);
+
+                rowCheck[row] = false;
+                lowerDiagonalCheck[row + col] = false;
+                upperDiagonalCheck[row - col] = false;
             }
         }
     }
 
-    bool issafe(int row, int col, int n) {
-        for (int i = 0; i < row; i++) {
-            if (arr[i] == col || abs(row - i) == abs(col - arr[i]))
-                return false;
-        }
-        return true;
-    }
     int totalNQueens(int n) {
-        arr = vector<int>(n, -1);
-        helper(0, n);
-        return cnt;
+        solve(n, 0);
+        return count;
     }
 };
-
-
-    
