@@ -15,6 +15,9 @@ public:
         return cnt==1 ? true:false;
     }
     bool isPowerOfTwo(int n) {
-        return powerOfTwo(n);
+        // return powerOfTwo(n);
+        if(n==0) return false;
+
+        return floor(log2(n))== ceil(log2(n)) ? true: false;
     }
 };
