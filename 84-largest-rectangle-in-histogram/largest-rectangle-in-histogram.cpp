@@ -1,62 +1,69 @@
 class Solution {
 public:
-    void prevGreEle(vector<int>& heights,vector<int>&prevAns){
+    void leftSideRec(vector<int>&heights,vector<int>&leftSide){
+
         stack<int>st;
         st.push(-1);
         for(int i = 0;i<heights.size();i++){
-            int element = heights[i];
-            while(st.top() != -1 && heights[st.top()] >=element){
+
+            while(st.top()!= -1 && heights[st.top()]>=heights[i]){
+
                 st.pop();
+
             }
-            prevAns.push_back(st.top());
+
+            leftSide.push_back(st.top());
+
             st.push(i);
         }
+
     }
-    void nextGreEle(vector<int>& heights,vector<int>&nextAns){
+    void rightSideRec(vector<int>&heights,vector<int>&rightSide){
         stack<int>st;
         st.push(-1);
-        for(int i = heights.size()-1;i>=0;i--){
-            int element = heights[i];
-            while(st.top() != -1 && heights[st.top()] >=element){
+        int n = heights.size();
+        for(int i = n-1;i>=0;i-- ){
+
+            while(st.top()!=-1 && heights[st.top()]>=heights[i]){
                 st.pop();
             }
-            nextAns.push_back(st.top());
+            if(st.top()==-1){
+                rightSide.push_back(n);
+            }else{
+                rightSide.push_back(st.top());
+            }
+
             st.push(i);
         }
+        reverse(rightSide.begin(),rightSide.end());
     }
+
     int largestRectangleArea(vector<int>& heights) {
+        vector<int>leftSide;
+        vector<int>rightSide;
+        leftSideRec(heights,leftSide);
 
-        vector<int>nextAns;
-        vector<int>prevAns;
-
-        prevGreEle(heights,prevAns);
-        nextGreEle(heights,nextAns);
-
-        reverse(nextAns.begin(),nextAns.end());
-
-        // ek extra case karna h jab -1 hai nextGreEle me to uska mtlb hai "array size"
-
-        for(int i = 0;i<nextAns.size();i++){
-            if(nextAns[i]== -1){
-                nextAns[i] = nextAns.size();
-            }
+        for(auto i: leftSide){
+            cout<<i<<" ";
         }
-        vector<int> maxAns;
+        cout<<endl;
+        rightSideRec(heights,rightSide);
+
+        for(auto i: rightSide){
+            cout<<i<<" ";
+        }
+        cout<<endl;
+
+        int answer = INT_MIN;
 
         for(int i = 0;i<heights.size();i++){
-            int width = nextAns[i]- prevAns[i]-1;
+            int width = rightSide[i]-leftSide[i]-1;
             int height = heights[i];
-
-            int area = width * height;
-
-            maxAns.push_back(area);
-        }
-        int largestRec = INT_MIN;
-
-        for(int i = 0;i<maxAns.size();i++){
-            largestRec = max(largestRec,maxAns[i]);
+            int area = width*height;
+            answer = max(area,answer);
         }
 
-        return largestRec;
+    
+        return answer;
     }
 };
