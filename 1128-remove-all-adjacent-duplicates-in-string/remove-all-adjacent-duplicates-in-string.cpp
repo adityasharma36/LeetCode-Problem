@@ -1,20 +1,27 @@
 class Solution {
 public:
-    void removeDuplicate(string s,string & answer){
-        for(int i = 0;i<s.size();i++){
-            if(answer.empty()){
-                answer.push_back(s[i]);
-            }else if(answer[answer.size()-1]!=s[i]){
-                answer.push_back(s[i]);
-            }else{
-                answer.pop_back();
+    string removeDuplicates(string s) {
+        stack<char> st;
+        for(auto i : s){
+            if(st.empty()){
+                st.push(i);
+            }
+            else if(st.top() == i){
+                st.pop();
+            } else {
+                st.push(i);
             }
         }
-    }
-    string removeDuplicates(string s) {
-        string answer = "";
-        removeDuplicate(s,answer);
-        return answer;
         
+        // Pop elements out of the stack into a string
+        string ans = "";
+        while (!st.empty()) {
+            ans += st.top();
+            st.pop();
+        }
+        
+        // Since stack is LIFO, the string is reversed. Reverse it back.
+        reverse(ans.begin(), ans.end());
+        return ans;
     }
 };
