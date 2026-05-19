@@ -1,36 +1,15 @@
 class Solution {
 public:
-    bool isPossible(string s){
-        stack<char> st;
+    bool bruteSol(string s){
 
-        for(int i = 0;i<s.size();i++){
-            char ch = s[i];
-            if(ch == 'a'){
-                st.push(ch);
-            }
-            else if( ch == 'b' ){
-               if(!st.empty() && st.top()== 'a'){
-                st.push(ch);
-               }else {
-                return false;
-               }
-            }
-            else{
-                if(!st.empty() && st.top()== 'b'){
-                    st.pop();
-                    if(!st.empty() && st.top()== 'a'){
-                        st.pop();
-                    }else{
-                        return false;
-                    }
-                }else{
-                    return false;
-                }
-            }
+        while(s.find("abc")!= string::npos){
+            int findIndex = s.find("abc");
+            s.erase(findIndex,3);
+
         }
-        return st.empty();
+        return s.empty();
     }
     bool isValid(string s) {
-       return isPossible(s); 
+        return bruteSol(s);
     }
 };
