@@ -16,7 +16,24 @@ public:
         }
         return st.size();
     }
+    int optimseSol(string s){
+        int close = 0;
+        int open = 0;
+        for(auto i: s){
+            if(i=='('){
+                open++;
+            }else{
+                if(open>0){
+                    open--;
+                }else{
+                    close++;
+                }
+            }
+        }
+        return open+close;
+    }
     int minAddToMakeValid(string s) {
-        return bruteForce(s);
+        // return bruteForce(s);
+        return optimseSol(s);
     }
 };
