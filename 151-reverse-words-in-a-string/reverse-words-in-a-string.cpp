@@ -1,6 +1,8 @@
 class Solution {
 public:
     string reverseString(string s){
+
+        
         vector<string>ch;
         string temp ;
         for(int i = 0;i<s.size();i++){
@@ -20,7 +22,7 @@ public:
         for(int i = ch.size()-1;i>=0;i--){
 
             temp+=ch[i];
-            
+
             if(i!=0){
                  
                 temp+=" ";
