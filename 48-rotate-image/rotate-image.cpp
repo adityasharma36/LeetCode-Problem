@@ -1,34 +1,29 @@
 class Solution {
-private:
-    void transpose(vector<vector<int>>& matrix) {
-        for (int i = 0; i < matrix.size(); ++i) {
-            for (int j = i; j < matrix[0].size(); ++j) {
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
-            }
-        }
-    }
-
-    void reverseRows(vector<vector<int>>& matrix) {
-        for (int r = 0; r < matrix.size(); ++r) {
-            int left = 0;
-            int right = matrix.size() - 1;
-
-            while (left < right) {
-                int temp = matrix[r][left];
-                matrix[r][left] = matrix[r][right];
-                matrix[r][right] = temp;
-
-                ++left;
-                --right;
-            }
-        }
-    }
-
 public:
+    void transpose(vector<vector<int>>& matrix){
+        int m = matrix.size();
+        int n = matrix[0].size();
+        for(int i = 0;i<m;i++){
+            for(int j = i;j<n;j++){
+                swap(matrix[i][j],matrix[j][i]);
+            }
+        }
+        // cout<<"complte"<<endl;
+    }
+    void rotateMar(vector<vector<int>>& matrix){
+        int n = matrix.size();
+        for(int i = 0;i<n;i++){
+            int start = 0;
+            int end = matrix[i].size()-1;
+            while(start<end){
+                swap(matrix[i][start],matrix[i][end]);
+                start++;
+                end--;
+            }
+        }
+    }
     void rotate(vector<vector<int>>& matrix) {
         transpose(matrix);
-        reverseRows(matrix);
+        rotateMar(matrix);
     }
 };
