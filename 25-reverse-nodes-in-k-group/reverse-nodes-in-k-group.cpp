@@ -10,50 +10,51 @@
  */
 class Solution {
 public:
-    int linkedList(ListNode* head){
+    void reverseGroup(queue<int>&qt,int k,int n){
+        
+        if(n>=k){
+            stack<int>st;
+
+            for(int i = 0;i<k;i++){
+                int ele = qt.front();
+                qt.pop();
+                st.push(ele);
+            }
+
+            for(int i = 0;i<k;i++){
+                int ele = st.top();
+                st.pop();
+                qt.push(ele);
+            }
+            reverseGroup(qt,k,n-k);
+        }
+        else{
+            for(int i = 0;i<n;i++){
+                int ele = qt.front();
+                qt.pop();
+                qt.push(ele);
+            }
+        }
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head || k==1) return head;
+        queue<int>qt;
+        int n = 0;
         ListNode* temp = head;
-        int count = 0;
-        while(temp!= NULL){
-            count++;
+        while(temp){
+            qt.push(temp->val);
+            n++;
+            temp= temp->next;
+        }
+        if(n<k) return head;
+        reverseGroup(qt,k,n);
+        temp = head;
+        while(temp && !qt.empty()){
+           
+            temp->val = qt.front();
+            qt.pop();
             temp = temp->next;
         }
-        return count;
-    }
-
-    ListNode* reverseLinkedList(ListNode* head, int k){
-        ListNode* curr = head;
-        ListNode* prev = NULL;
-        ListNode* next = NULL;
-        while(k-- && curr != NULL){
-            next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
-        }
-        return prev;
-    }
-
-    ListNode* reverseGroup(ListNode* head, int k, int len){
-        if(len < k) return head; 
-
-        
-        ListNode* curr = head;
-        int count = 0;
-
-        while(count < k && curr != NULL){
-            curr = curr->next;
-            count++;
-        }
-
-        ListNode* newHead = reverseLinkedList(head, k);
-
-        head->next = reverseGroup(curr, k, len - k);
-
-        return newHead;
-    }
-
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        int llSize = linkedList(head);
-        return reverseGroup(head, k, llSize);
+        return head;
     }
 };
