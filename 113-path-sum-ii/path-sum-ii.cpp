@@ -1,28 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    void pathSumHelper(TreeNode* root, int targetSum, vector<vector<int>>& ans, vector<int>& path) {
-        if (root == nullptr) return;
+    void pathSum(TreeNode* root,int targetSum,int sum ,vector<vector<int>>& path,vector<int>&temp){
+        if(!root) return;
 
-        path.push_back(root->val);
-        targetSum -= root->val;
+        sum+=root->val;
+        temp.push_back(root->val);
 
-        // If we reach a leaf and targetSum becomes 0 → valid path
-        if (root->left == nullptr && root->right == nullptr && targetSum == 0) {
-            ans.push_back(path);
-        } else {
-            // Continue search in both subtrees
-            pathSumHelper(root->left, targetSum, ans, path);
-            pathSumHelper(root->right, targetSum, ans, path);
+        if(!root->left && !root->right && targetSum == sum){
+            path.push_back(temp);
         }
-
-        // Backtrack
-        path.pop_back();
+        pathSum(root->left,targetSum,sum,path,temp);
+        pathSum(root->right,targetSum,sum,path,temp);
+        temp.pop_back();
     }
-
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        vector<vector<int>> ans;
-        vector<int> path;
-        pathSumHelper(root, targetSum, ans, path);
-        return ans;
+        vector<vector<int>>path;
+        vector<int>temp;
+        pathSum(root,targetSum,0,path,temp);
+        return path;
     }
 };
