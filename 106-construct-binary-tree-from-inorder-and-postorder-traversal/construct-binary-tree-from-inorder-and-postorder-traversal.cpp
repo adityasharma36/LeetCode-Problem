@@ -11,45 +11,47 @@
  */
 class Solution {
 public:
-    // Helper function to recursively build the tree
-    TreeNode* buildTree(vector<int>& postorder, int postStart, int postEnd,
-                        vector<int>& inorder, int inStart, int inEnd,
-                        map<int, int> &inmap) {
-        // Step 6: Base case - invalid range
-        if (inStart > inEnd || postStart > postEnd)
-            return NULL;
-        
-        // Step 2: Last element in postorder is the root
-        TreeNode* root = new TreeNode(postorder[postEnd]);
+    int findIndex(vector<int>& inorder,int ele){
 
-        // Step 3: Find root position in inorder using hashmap
-        int inRoot = inmap[root->val];
-        
-        // Step 4: Calculate number of nodes in left subtree
-        int numsleft = inRoot - inStart;
+        int n = inorder.size();
 
-        // Step 5: Recursively build left and right subtrees
-        // Left subtree: first numsleft elements in postorder
-        root->left = buildTree(postorder, postStart, postStart + numsleft - 1,
-                               inorder, inStart, inRoot - 1, inmap);
-        
-        // Right subtree: remaining elements before root in postorder
-        root->right = buildTree(postorder, postStart + numsleft, postEnd - 1,
-                                inorder, inRoot + 1, inEnd, inmap);
+        for(int i = 0;i<n;i++){
+
+            if(inorder[i]==ele){
+
+                return i;
+
+            }
+        }
+
+        return -1;
+    }
+    TreeNode* constructTree(vector<int>& inorder,vector<int>& postorder,int stIn,int enIn,int &enPo,int n){
+
+        if(stIn>enIn) return NULL;
+
+        if(enPo<0) return NULL;
+
+        int ele = postorder[enPo];
+
+        enPo--;
+
+        TreeNode * root = new TreeNode(ele);
+
+        int findIn = findIndex(inorder,ele);
+
+        root->right = constructTree(inorder,postorder,findIn+1,enIn,enPo,n);
+        root->left = constructTree(inorder,postorder,stIn,findIn-1,enPo,n);
 
         return root;
-    }
 
+    }
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        // Step 1: Build hashmap for O(1) inorder index lookup
-        map<int, int> inmap;
-        for (int i = 0; i < inorder.size(); i++) {
-            inmap[inorder[i]] = i;
-        }
-        
-        // Start recursive tree construction
-        TreeNode* root = buildTree(postorder, 0, postorder.size() - 1, 
-                                   inorder, 0, inorder.size() - 1, inmap);
+        int stIn = 0;
+        int n = inorder.size();
+        int enIn = n-1;
+        int enPo = n-1;
+        TreeNode* root = constructTree(inorder,postorder,stIn,enIn,enPo,n);
         return root;
     }
 };
