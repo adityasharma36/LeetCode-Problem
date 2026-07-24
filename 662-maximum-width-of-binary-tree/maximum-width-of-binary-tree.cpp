@@ -12,34 +12,34 @@
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-
+        if(!root) return 0;
         queue<pair<TreeNode*,unsigned long long>> q;
-
-        int maxWid = 0;
-
-        q.push({root,0});
-
+        q.push({root,1});
+         long long  maxLen = INT_MIN;
+        cout<<"max : "<<maxLen<<endl;
         while(!q.empty()){
-            
-            int totalSize = q.size();
+            unsigned long long  size = q.size();
+            cout<<size<<endl;
             unsigned long long firstIndex = q.front().second;
             unsigned long long lastIndex = q.back().second;
+             long long len = lastIndex-firstIndex+1;
+            cout<<"len: "<<len<<endl;
+            maxLen = max(maxLen,len);
+            cout<<"maxLen : "<<maxLen<<endl;
+            for(unsigned long long i = 0;i<size;i++){
+                 auto ele = q.front();
+                 q.pop();
+                 auto index = ele.second;
+                 auto node = ele.first;
 
-            maxWid = max(maxWid , (int)(lastIndex-firstIndex + 1));
-
-
-            for(int i = 0;i<totalSize;i++){
-                auto curr = q.front();
-
-                q.pop();
-                if(curr.first->left){
-                    q.push({curr.first->left,2*curr.second + 1});
-                }
-                if(curr.first->right){
-                    q.push({curr.first->right,2*curr.second+2});
-                }
+                 if(node->left){
+                    q.push({node->left,2*index});
+                 }
+                 if(node->right){
+                    q.push({node->right,2*index+1});
+                 }
             }
         }
-        return maxWid;
+        return maxLen;
     }
 };
