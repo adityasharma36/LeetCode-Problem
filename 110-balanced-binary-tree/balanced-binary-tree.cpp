@@ -11,27 +11,27 @@
  */
 class Solution {
 public:
-    int getHeight(TreeNode* root){
+    int solve(TreeNode* root){
         if(!root) return 0;
-        int leftSide = getHeight(root->left);
-        int rightSide = getHeight(root->right);
-        return 1 + max(leftSide,rightSide);
+        int left = solve(root->left);
+        int right = solve(root->right);
+
+        int maxLen = max(left,right);
+
+        return maxLen+1;
     }
     bool isBalanced(TreeNode* root) {
         if(!root) return true;
-
-        int leftSide = getHeight(root->left);
-        int rightSide = getHeight(root->right);
-
-        int diff = abs(leftSide-rightSide);
-
-        bool ans = diff<=1 ? true: false;
+        int leftSide = solve(root->left);
+        int rightSide = solve(root->right);
+        
+        bool ans = abs(leftSide-rightSide)<=1;
 
         if(!ans) return false;
 
-        bool leftBala = isBalanced(root->left);
-        bool rightBala = isBalanced(root->right);
-
-        return (leftBala && rightBala);
+        bool left = isBalanced(root->left);
+        bool right = isBalanced(root->right);
+        if(left && right) return true;
+        return false;
     }
 };
