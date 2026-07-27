@@ -11,19 +11,13 @@
  */
 class Solution {
 public:
-    bool treeSame(TreeNode* p ,TreeNode*q){
-            if(!p && !q) return true;
-            if(p && !q) return false;
-            if(!p && q) return false;
-            if(p->val != q->val) return false;
-            
-            bool leftSide = treeSame(p->left,q->left);
-            bool rightSide = treeSame(p->right,q->right);
-
-            return (leftSide && rightSide);
-
-    } 
     bool isSameTree(TreeNode* p, TreeNode* q) {
-        return treeSame(p,q);
+        if(!p && !q) return true;
+        if((!p && q) || (!q && p)) return false;
+        if(p->val != q->val ) return false;
+        bool leftSearch = isSameTree(p->left,q->left);
+        bool rightSearch = isSameTree(p->right,q->right);
+
+        return leftSearch && rightSearch;
     }
 };
