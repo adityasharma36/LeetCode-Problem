@@ -1,60 +1,46 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        
 
-        vector<vector<int>>ans;
+        map<int, map<int, multiset<int>>> um;
+        queue<pair<TreeNode*, pair<int,int>>> q;
 
-        if(!root) return ans;
+        q.push({root, {0, 0}});   // {node, {col, row}}
 
-        queue<pair<TreeNode* , pair<int,int>>>qu;
+        while (!q.empty()) {
 
-        qu.push({root, {0,0}});
+            auto front = q.front();
+            q.pop();
 
-        map<int,map<int,multiset<int>>>mp;
+            TreeNode* node = front.first;
+            int col = front.second.first;
+            int row = front.second.second;
 
-        while(!qu.empty()){
+            um[col][row].insert(node->val);
 
-            auto front = qu.front();qu.pop();
+            if (node->left)
+                q.push({node->left, {col - 1, row + 1}});
 
-            TreeNode* & node = front.first;
-
-            auto coodinate = front.second;
-
-            int &row  = coodinate.first;
-            int &col = coodinate.second;
-
-            mp[col][row].insert(node->val);
-
-            if(node->left)
-                qu.push({node->left,{row+1, col-1}});
-            
-            if(node->right)
-                qu.push({node->right,{row+1, col+1}});
-
-            
+            if (node->right)
+                q.push({node->right, {col + 1, row + 1}});
         }
-        // store final vertical order into ans;
-        for(auto it : mp){
-            auto & colmap = it.second;
-            vector<int > vline;
-            for(auto colMap: colmap){
-                auto & mSet = colMap.second;
-                vline.insert(vline.end(),mSet.begin(),mSet.end());
+
+        vector<vector<int>> ans;
+
+        for (auto &colMap : um) {
+
+            vector<int> temp;
+
+            for (auto &rowMap : colMap.second) {
+
+                temp.insert(temp.end(),
+                            rowMap.second.begin(),
+                            rowMap.second.end());
             }
-            ans.push_back(vline);
+
+            ans.push_back(temp);
         }
+
         return ans;
     }
 };
