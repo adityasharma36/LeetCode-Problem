@@ -1,26 +1,21 @@
+
 class Solution {
 public:
+  
     void flatten(TreeNode* root) {
-        TreeNode* temp = root;
-
-        while (temp) {
-            if (temp->left) {
-                // Step 1: Find rightmost node of left subtree
-                TreeNode* prev = temp->left;
-                while (prev->right) {
-                    prev = prev->right;
-                }
-
-                // Step 2: Connect right subtree to rightmost node
-                prev->right = temp->right;
-
-                // Step 3: Move left subtree to right
-                temp->right = temp->left;
-                temp->left = nullptr;
+        TreeNode* curr = root;
+        while(curr ){
+            if(curr->left){
+            TreeNode* prec = curr->left;
+            while(prec->right){
+                prec = prec->right;
             }
+            prec->right = curr->right;
+            curr->right = curr->left;
+            curr->left = nullptr;
+            }
+            curr = curr->right;
 
-            // Move forward
-            temp = temp->right;
         }
     }
 };
