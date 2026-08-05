@@ -18,12 +18,27 @@ public:
         ans.push_back(root->val);
         puttingVal(root->right,ans);
     }
+    int cnt = 0;
+    int ans = -1;
+    void secondMethod(TreeNode* root,int k){
+        if(!root) return ;
+        secondMethod(root->left,k);
+        cnt++;
+        if(cnt == k) {
+            ans = root->val;
+            return;
+        };
+       secondMethod(root->right,k);
+
+        
+    }
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> ans;
-        puttingVal(root,ans);
+        // vector<int> ans;
+        // puttingVal(root,ans);
 
-        return ans[k-1];
-
+        // return ans[k-1];
+      secondMethod(root,k); 
+      return ans;
 
     }
 };
