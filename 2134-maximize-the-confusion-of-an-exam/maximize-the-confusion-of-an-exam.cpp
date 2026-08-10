@@ -73,6 +73,23 @@ public:
         }
         return max(ans1,ans2);
     }
+    int thirdMethod(string answerKey,int k){
+        unordered_map<char,int>um;
+        int i = 0;
+        int j = 0;
+        int n = answerKey.size();
+        int ans = 0;
+        while(j<n){
+            um[answerKey[j]]++;
+            while(min(um['T'],um['F']) >k){
+                um[answerKey[i]]--;
+                i++;
+            }
+            ans = max(ans,j-i+1);
+            j++;
+        }
+        return ans;
+    }
     int maxConsecutiveAnswers(string answerKey, int k) {
         // int index = 0;
         // n = answerKey.size();
@@ -81,6 +98,7 @@ public:
         // return ans;   
 
 
-        return secondMethod(answerKey,k);
+        // return secondMethod(answerKey,k);
+        return thirdMethod(answerKey,k);
     }
 };
