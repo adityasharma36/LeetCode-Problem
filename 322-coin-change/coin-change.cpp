@@ -31,11 +31,33 @@ public:
         }
         return dp[amount]= ans;
     }
+    int solveByTabu(vector<int>& coins,int amount){
+       
+        vector<int>dp(amount+1 , -1);
+
+       dp[0]= 0;
+       for(int amt = 1;amt<=amount;amt++){
+            int ans = INT_MAX;
+            for(int i = 0;i<coins.size();i++){
+                int coin = coins[i];
+                if(amt>= coin){
+                    int recursiveAns = dp[amt-coin];
+                    if(recursiveAns!= INT_MAX){
+                        int currAns= 1+ recursiveAns;
+                        ans = min(ans,currAns);
+                    }
+                }
+                        dp[amt] = ans;
+            }
+       }
+       return dp[amount];
+    }
     int coinChange(vector<int>& coins, int amount) {
         // int ans =  solveByRec(coins,amount);
         int n = coins.size();
         vector<int>dp(amount+1,-1); 
-        int ans =  solveByMemo(coins,amount,dp);
+        // int ans =  solveByMemo(coins,amount,dp);
+        int ans = solveByTabu(coins,amount);
         return ans == INT_MAX ? -1 : ans;
     
     }
