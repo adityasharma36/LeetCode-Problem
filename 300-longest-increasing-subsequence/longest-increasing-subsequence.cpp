@@ -23,11 +23,29 @@ public:
 
         return dp[curr][lastIndex+1];
     }
+    int solveByTabu(vector<int>& nums){
+        int n = nums.size();
+        vector<vector<int>>dp(n+2,vector<int>(n+2,0));
+
+        for(int i = n-1;i>=0;i--){
+            for(int j = n-1;j>=-1;j--){
+                int incl = 0;
+            if(j == -1 || nums[i] > nums[j]){
+                incl = 1+ dp[i+1][i+1];
+            }
+            int excl = dp[i+1][j+1];
+
+            dp[i][j+1] = max(incl,excl);
+            }
+        }
+        return dp[0][0];
+    }
     int lengthOfLIS(vector<int>& nums) {
         // return solveByReco(nums,-1,0);
         int n = nums.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+2,-1));
-        return solveByMemo(nums,-1,0,dp);
+        // vector<vector<int>>dp(n+1,vector<int>(n+2,-1));
+        // return solveByMemo(nums,-1,0,dp);
+        return solveByTabu(nums);
 
     }
 };
