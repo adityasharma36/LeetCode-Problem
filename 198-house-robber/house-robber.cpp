@@ -18,10 +18,28 @@ public:
         dp[i] = max(incl,excl);
         return dp[i];
     }
+    int solveByTabu(vector<int>& nums)
+    {
+        vector<int>dp(nums.size()+2,0);
+        int n = nums.size();
+        for(int i = n-1;i>=0;i--){
+            int incl = 0;
+            if(i+2<n){
+                incl = nums[i]+ dp[i+2];
+            }else{
+                incl = nums[i];
+            }
+            int excl = dp[i+1];
+            dp[i]= max(incl,excl);
+        }
+        return dp[0];
+    }
     int rob(vector<int>& nums) {
         // return recursiveSol(nums,0);
-        vector<int>dp(nums.size()+1,-1);
-        return solveByMemo(nums,0,dp);
+        // vector<int>dp(nums.size()+1,-1);
+        // return solveByMemo(nums,0,dp);
+
+        return solveByTabu(nums);
 
     }
 };
