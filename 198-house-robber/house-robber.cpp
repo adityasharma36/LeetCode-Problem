@@ -20,7 +20,7 @@ public:
     }
     int solveByTabu(vector<int>& nums)
     {
-        vector<int>dp(nums.size()+2,0);
+        vector<int>dp(nums.size()+1,0);
         int n = nums.size();
         for(int i = n-1;i>=0;i--){
             int incl = 0;
