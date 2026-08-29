@@ -34,12 +34,26 @@ public:
         }
         return dp[0];
     }
+    int spaceOpti(vector<int>& nums){
+        int n = nums.size();
+        int next1 = 0;
+        int next2 = 0;
+        for(int i = n-1;i>=0;i--){
+            int incl = nums[i]+ next2;
+            int excl= next1;
+            int curr = max(incl,excl);
+            next2 = next1;
+            next1 = curr;
+        }
+        return next1;
+    }
     int rob(vector<int>& nums) {
         // return recursiveSol(nums,0);
         // vector<int>dp(nums.size()+1,-1);
         // return solveByMemo(nums,0,dp);
 
-        return solveByTabu(nums);
+        // return solveByTabu(nums);
+        return spaceOpti(nums);
 
     }
 };
