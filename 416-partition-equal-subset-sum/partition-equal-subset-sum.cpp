@@ -1,115 +1,38 @@
 class Solution {
 public:
-    bool partitionSum(vector<int>& nums,int sum,int start){
-        if(sum == 0){
-            return true;
+    bool solveByRec(vector<int>& nums,int sum, int i ){
+        if(sum==0) return true;
+        if(i>= nums.size()) return false;
+
+        bool take = solveByRec(nums,sum-nums[i],i+1);
+        bool notTake = solveByRec(nums,sum,i+1);
+
+        return take || notTake;
+    }
+    bool solveByMemo(vector<int>&nums,int sum ,int i,vector<vector<int>>&dp){
+        if(sum==0) return true;
+        if(i>=nums.size()) return false;
+  
+
+        if(dp[i][sum] != -1) return dp[i][sum];
+        bool take = false;
+        if(sum>=nums[i]){
+         take = solveByMemo(nums,sum-nums[i],i+1,dp);
+
         }
-        if (start >= nums.size() || sum < 0) return false;
-        
-        return (partitionSum(nums,sum-nums[start],start+1) || partitionSum(nums,sum,start+1));
-     
-      
+        bool notTake = solveByMemo(nums,sum,i+1, dp);
+
+        dp[i][sum]= take || notTake;
+        return dp[i][sum];
     }
-    bool memo(vector<int>& nums, int sum, int start, vector<vector<int>>& dp) {
-        if (sum == 0) return true;
-        if (start >= nums.size() || sum < 0) return false;
-
-        if (dp[sum][start] != -1)
-            return dp[sum][start];
-
-        dp[sum][start] =
-            memo(nums, sum - nums[start], start + 1, dp) ||
-            memo(nums, sum, start + 1, dp);
-
-        return dp[sum][start];
-    }
-
-    bool solveByTab(vector<int>& nums){
-        int total = accumulate(nums.begin(), nums.end(), 0);
-         if (total % 2 != 0) return false;
-
-        int target = total / 2;
-
-        vector<vector<bool>> dp(target + 1, vector<bool>(nums.size()+1,false ));
-
-        for(int i = 0;i<=nums.size();i++){
-
-            dp[0][i] = true;
-        
-        }
-        for (int sum = 1; sum <= target; sum++) {
-
-        for (int start = nums.size() - 1; start >= 0; start--) {
-
-            bool take = false;
-
-            if (nums[start] <= sum) {
-
-                take = dp[sum - nums[start]][start + 1];
-            }
-            bool skip = dp[sum][start + 1] ;
-
-            dp[sum][start] = take || skip;
-        }
-    }
-        return dp[target][0];
-
-    }
-    bool spaceOptimise(vector<int>&nums){
-         int total = accumulate(nums.begin(), nums.end(), 0);
-         if (total % 2 != 0) return false;
-        int target = total / 2;
-        vector<bool>curr(target+1,false);
-        vector<bool>next(target+1,false);
-        curr[0] = true;
-        next[0] = true;
-           for (int start = nums.size() - 1; start >= 0; start--) {
-                 for (int sum = 1; sum <= target; sum++) {
-
-                    bool take = false;
-
-                    if (nums[start] <= sum) {
-
-                        take = next[sum - nums[start]];
-                    }
-                    bool skip = next[sum] ;
-
-                    curr[sum] = take || skip;
-                }
-                next = curr;
-           }
-           return next[target];
-    }
-
-    bool spaceOpt2(vector<int>& nums){
-         int total = accumulate(nums.begin(), nums.end(), 0);
-         if (total % 2 != 0) return false;
-        int target = total / 2;
-        vector<bool>curr(target+1,false);
-        curr[0]= true;
-        
-        for (int start = nums.size() - 1; start >= 0; start--) {
-
-            for (int sum = target; sum >= nums[start]; sum--) {
-
-                curr[sum] = curr[sum] || curr[sum-nums[start]];
-         }
-        }
-
-        return curr[target];
-    
-    }
-
     bool canPartition(vector<int>& nums) {
-        int total = accumulate(nums.begin(), nums.end(), 0);
-        if (total % 2 != 0) return false;
+        int sum = accumulate(begin(nums),end(nums),0);
+        if(sum%2!=0) return false;
 
-        int target = total / 2;
-        vector<vector<int>> dp(target + 1, vector<int>(nums.size(), -1));
-
-        // return memo(nums, target, 0, dp);
-        // return solveByTab(nums);
-        // return spaceOptimise(nums);
-        return spaceOpt2(nums);
+        int half = sum/2;
+        // return solveByRec(nums,half,0);
+        int n = nums.size(); 
+        vector<vector<int>>dp(n+1,vector<int>(half+1,-1));
+        return solveByMemo(nums,half,0,dp);
     }
 };
