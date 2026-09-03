@@ -17,13 +17,26 @@ public:
         int excl = solveByRec(cuboids,prev,curr+1);
         return max(include,excl);
     }
+    int solveByMemo(vector<vector<int>>& cuboids,int prev,int curr,vector<vector<int>>&dp){
+        if(curr>=cuboids.size()) return 0;
+        if(dp[prev+1][curr] != -1) return dp[prev+1][curr];
+        int incl = 0;
+        if(prev == -1  || isFollow(cuboids[prev], cuboids[curr])){
+            incl = cuboids[curr][2] + solveByMemo(cuboids,curr,curr+1,dp);
+        }
+        int excl = solveByMemo(cuboids,prev,curr+1,dp);
+        return dp[prev+1][curr] = max(incl,excl);
+    }
     int maxHeight(vector<vector<int>>& cuboids) {
         for(auto &cuboid : cuboids){
             sort(begin(cuboid),end(cuboid));
         }
         sort(begin(cuboids),end(cuboids));
 
-        int ans = solveByRec(cuboids,-1,0);
+        // int ans = solveByRec(cuboids,-1,0);
+        int n = cuboids.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        int ans = solveByMemo(cuboids,-1,0,dp);
         return ans;
     }
 };
