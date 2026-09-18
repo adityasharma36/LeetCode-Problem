@@ -55,13 +55,38 @@ public:
         }
         return dp[0][0];
     }
+    int spaceOp(string s1,string s2){
+        int n = s2.size();
+        vector<int>next(n+1,0);
+        vector<int>curr(n+1,0);
+        for(int i = s1.size();i>=0;i--){
+            for(int j = s2.size();j>=0;j--){
+                int minAns = 0;
+            if(i>=s1.size() || j>=s2.size()){
+                for(int x= i ;x<s1.size();x++) minAns+=s1[x];
+                for(int x = j;x<s2.size();x++) minAns+=s2[x];
+            }else if(s1[i] == s2[j]){
+                minAns = next[j+1];
+            }else{
+                int st = s1[i] + next[j];
+                int nd = s2[j] + curr[j+1];
+            
+                minAns = min(st,nd);
+            }
+            curr[j]= minAns;
+            }
+            next = curr;
+        }
+       return next[0];
+    }
     int minimumDeleteSum(string s1, string s2) {
         // int ans= solveByRec(s1,s2,0,0);
         // int n = s1.size();
         // int m = s2.size();
         // vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
         // int ans= solveByMemo(s1,s2,0,0,dp);
-        int ans= solveByTabu(s1,s2);
+        // int ans= solveByTabu(s1,s2);
+        int ans = spaceOp(s1,s2);
         return ans;
     }
 };
