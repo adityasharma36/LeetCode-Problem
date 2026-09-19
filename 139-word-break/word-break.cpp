@@ -34,6 +34,25 @@ public:
         return dp[i][j];
 
     }
+    bool solveByTabu(string s){
+        int n = s.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int i = 0;i<=n;i++){
+            dp[n][i]= 1;
+        }
+        for(int i = n-1;i>=0;i--){
+            for(int j = n-1;j>=0;j--){
+                string str = s.substr(i,j-i+1);
+                bool ans = false;
+            if(mp.find(str) != mp.end()){
+                ans = ans || dp[j+1][j+1];
+            }
+            bool excl = dp[i][j+1];
+            dp[i][j]= ans || excl;
+            }
+        }
+        return dp[0][0];
+    }
     bool wordBreak(string s, vector<string>& wordDict) {
         for(auto i : wordDict){
             mp.insert(i);
@@ -41,8 +60,10 @@ public:
 
         // int ans = solveByRec(s,0,0);
         int n = s.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        int ans = solveByMemo(s,0,0,dp);
+        // vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        // int ans = solveByMemo(s,0,0,dp);
+
+        bool ans = solveByTabu(s);
         return ans;
     }
 };
