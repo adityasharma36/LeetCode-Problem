@@ -41,7 +41,7 @@ public:
             dp[n][i]= 1;
         }
         for(int i = n-1;i>=0;i--){
-            for(int j = n-1;j>=0;j--){
+            for(int j = n-1;j>=i;j--){
                 string str = s.substr(i,j-i+1);
                 bool ans = false;
             if(mp.find(str) != mp.end()){
