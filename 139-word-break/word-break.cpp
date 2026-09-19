@@ -1,111 +1,48 @@
 class Solution {
 public:
-    bool findString(string s, vector<string>& wordDict){
-        for(auto i : wordDict){
-            if(i == s){
-                return true;
-            }
+    set<string> mp;
+
+    bool solveByRec(string s, int i, int j){
+        if(i >= s.size()) return true;
+
+        if(j >= s.size()) return false;
+
+        string str = s.substr(i, j-i+1);
+
+        bool ans = false;
+
+        if(mp.find(str) != mp.end()){
+            ans = ans || solveByRec(s, j+1, j+1);
         }
-        return false;
+
+        bool excl = solveByRec(s, i, j+1);
+
+        return ans || excl;
     }
-    bool solveByRec(string s, vector<string>& wordDict,int start){
-
-        if(start == s.size()){
-
-            return true;
-
+    bool solveByMemo(string s,int i,int j,vector<vector<int>>& dp){
+        if(i>=s.size()) return true;
+        if(j>=s.size()) return false;
+        if(dp[i][j] != -1) return dp[i][j];
+        string str = s.substr(i,j-i+1);
+        bool ans = false;
+        if(mp.find(str) != mp.end()){
+            ans = ans || solveByMemo(s,j+1,j+1,dp);
         }
+        bool excl = solveByMemo(s,i,j+1,dp);
+        dp[i][j]= ans || excl;
 
-        string ans = "";
-
-        bool isPossible = false;
-
-        for(int i = start;i<s.size();i++){
-
-            ans+=s[i];
-
-            if(findString(ans,wordDict)){
-
-                // sabse main line h 
-                isPossible = isPossible ||  solveByRec(s,wordDict,i+1);
-
-            }
-        }
-        return isPossible;
-    }
-
-
-    bool solveByMemo(string s,vector<string>& wordDict,vector<int>& dp,int start){
-
-
-        if(start == s.size()){
-
-            return true;
-
-        }
-
-        if(dp[start] != -1){
-
-            return dp[start];
-
-        }
-
-        string ans = "";
-
-        bool isPossible = false;
-
-        for(int i = start;i<s.size();i++){
-
-            ans+=s[i];
-
-            if(findString(ans,wordDict)){
-
-                // sabse main line h 
-                isPossible = isPossible ||  solveByMemo(s,wordDict,dp,i+1);
-
-            }
-        }
-        dp[start] = isPossible;
-        return dp[start];
-    }
-
-    bool solveByTab(string s, vector<string>& wordDict){
-
-        vector<int>dp(s.size()+1,true);
-
-        for(int i = s.size()-1;i>= 0;i--){
-
-
-            
-            string ans = "";
-
-            bool isPossible = false;
-
-            for(int j = i;j<s.size();j++){
-
-                ans+=s[j];
-
-                if(findString(ans,wordDict)){
-
-                // sabse main line h 
-                    isPossible = isPossible ||  dp[j+1];
-
-                }
-            }
-        dp[i] = isPossible;
-
-        }
-
-        return dp[0];
-
+        return dp[i][j];
 
     }
     bool wordBreak(string s, vector<string>& wordDict) {
-        // bool solve = solveByRec(s,wordDict,0) ;
-        // vector<int>dp(s.size()+1,-1);
-        // bool solve = solveByMemo(s,wordDict,dp,0);
-        bool solve = solveByTab(s,wordDict);
-        return solve;
+        for(auto i : wordDict){
+            mp.insert(i);
+        }
 
+        // int ans = solveByRec(s,0,0);
+        int n = s.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        int ans = solveByMemo(s,0,0,dp);
+        return ans;
     }
 };
