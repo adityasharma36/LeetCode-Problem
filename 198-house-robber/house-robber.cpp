@@ -1,59 +1,23 @@
 class Solution {
 public:
-    int recursiveSol(vector<int>&nums,int i){
+    int solveByRec(vector<int>& nums,int i){
         if(i>=nums.size()) return 0;
-
-        int incl = nums[i] + recursiveSol(nums,i+2);
-        int excl = 0 + recursiveSol(nums,i+1);
-
+        int incl = nums[i] + solveByRec(nums,i+2);
+        int excl = solveByRec(nums,i+1);
         return max(incl,excl);
     }
     int solveByMemo(vector<int>& nums,int i,vector<int>&dp){
         if(i>=nums.size()) return 0;
-        if(dp[i] != -1) return dp[i];
-
+        if(dp[i]!= -1) return dp[i];
         int incl = nums[i] + solveByMemo(nums,i+2,dp);
         int excl = solveByMemo(nums,i+1,dp);
-
-        dp[i] = max(incl,excl);
-        return dp[i];
-    }
-    int solveByTabu(vector<int>& nums)
-    {
-        vector<int>dp(nums.size()+1,0);
-        int n = nums.size();
-        for(int i = n-1;i>=0;i--){
-            int incl = 0;
-            if(i+2<n){
-                incl = nums[i]+ dp[i+2];
-            }else{
-                incl = nums[i];
-            }
-            int excl = dp[i+1];
-            dp[i]= max(incl,excl);
-        }
-        return dp[0];
-    }
-    int spaceOpti(vector<int>& nums){
-        int n = nums.size();
-        int next1 = 0;
-        int next2 = 0;
-        for(int i = n-1;i>=0;i--){
-            int incl = nums[i]+ next2;
-            int excl= next1;
-            int curr = max(incl,excl);
-            next2 = next1;
-            next1 = curr;
-        }
-        return next1;
+        return dp[i] = max(incl,excl);
     }
     int rob(vector<int>& nums) {
-        // return recursiveSol(nums,0);
-        // vector<int>dp(nums.size()+1,-1);
-        // return solveByMemo(nums,0,dp);
-
-        // return solveByTabu(nums);
-        return spaceOpti(nums);
-
+        // int ans = solveByRec(nums,0);
+        int n = nums.size();
+        vector<int>dp(n+1,-1);
+        int ans = solveByMemo(nums,0,dp);
+        return ans;
     }
 };
