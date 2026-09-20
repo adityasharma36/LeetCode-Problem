@@ -23,6 +23,19 @@ public:
         }
         return dp[0];
     }
+    int spaceOp(vector<int>&nums){
+        int next = 0;
+        int curr = 0;
+        int n = nums.size();
+        for(int i = n-1;i>=0;i--){
+        int incl = nums[i] + next;
+        int excl = curr;
+        int present = max(incl,excl);
+        next = curr;
+        curr = present;
+        }
+        return curr;
+    }
     int rob(vector<int>& nums) {
         // int ans = solveByRec(nums,0);
         // int n = nums.size();
