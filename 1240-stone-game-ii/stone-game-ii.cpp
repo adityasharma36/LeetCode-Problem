@@ -34,11 +34,37 @@ public:
         }
         return dp[i][M][alice]= ans;
     }
+    int solveByTabu(vector<int>& piles){
+        int n = piles.size();
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(n+1,vector<int>(2,0)));
+        for(int i = n-1;i>=0;i--){
+            for(int M = n-1;M>=1;M--){
+                for(int alice = 0;alice<=1;alice++){
+                        int ans = alice ? INT_MIN:INT_MAX;
+                        int total= 0;
+
+                        for(int x = 1;x<=2*M;x++){
+                            if(i+x-1 >=piles.size()) break;
+                            total+=piles[i+x-1];
+                        if(alice){
+                            ans = max(ans,total+dp[i+x][max(M,x)][!alice]);
+                        }else{
+                            ans = min(ans,dp[i+x][max(M,x)][!alice]);
+                        }           
+                    }
+                    dp[i][M][alice]= ans;
+                }
+            }
+        }
+        return dp[0][1][1];
+    }
     int stoneGameII(vector<int>& piles) {
         // int ans = solveByRec(piles,0,1,true);
         int n = piles.size();
-        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(n+1,vector<int>(2,-1)));
-        int ans = solveByMemo(piles,0,1,true,dp);
+        if(n == 1) return piles[0];
+        // vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(n+1,vector<int>(2,-1)));
+        // int ans = solveByMemo(piles,0,1,true,dp);
+        int ans = solveByTabu(piles);
         return ans;
     }
 };
