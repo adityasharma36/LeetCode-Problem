@@ -1,45 +1,35 @@
-vector<int> dp;
 class Solution {
-public:    
-    static int play(int i, vector<int>& stoneValue, int n){
-        if (dp[i]!=INT_MIN) return dp[i];
-        int result=stoneValue[i]-play(i+1, stoneValue, n);
-        if (i+2<=n)
-            result=max(result,
-            stoneValue[i]+stoneValue[i+1]-play(i+2, stoneValue, n));
-        if (i+3<=n)
-            result=max(result,
-            stoneValue[i]+stoneValue[i+1]+stoneValue[i+2]-play(i+3, stoneValue, n));
-        return dp[i]=result;
-    }
-    static inline int iterate_play(int i, vector<int>& stoneValue, int n){
-        for (int i=n-1; i>=0; i--){
-            int k0=min(3, n-i);
-            int s=stoneValue[i];
-            int result=s-dp[(i+1)%3];
-            for(int k=1; k<k0; k++){
-                s+=stoneValue[i+k];
-                result=max(result,s-dp[(i+k+1)%3] );
-            }
-            dp[i%3]=result;
+public:
+    int solveByRec(vector<int>& stoneValue,int i){
+        if(i== stoneValue.size()) return 0;
+        int ans = INT_MIN;
+        int sum = 0;
+        for(int x = 1;x<=3;x++){
+            if(i+x-1 >=stoneValue.size()) break;
+            sum+=stoneValue[i+x-1];
+            ans = max(ans,sum - solveByRec(stoneValue,i+x));
         }
-        return dp[0];
+        return ans;
     }
-    static string stoneGameIII(vector<int>& stoneValue) {
-        const int n = stoneValue.size();
-        dp.assign(3, 0);// n+1 replaced by 3
-        dp[n%3]=0;
-        int win=iterate_play(0, stoneValue,  n);
-        
-        if (win>0) return "Alice";
-        if (win<0) return "Bob";
+    int solveByMemo(vector<int>&stone,int i,vector<int>& dp){
+        if(i == stone.size()) return 0;
+        if(dp[i] != -1) return dp[i];
+        int ans = INT_MIN;
+        int sum = 0;
+        for(int x = 1;x<=3;x++){
+            if(x+i-1 >= stone.size()) break;
+            sum+=stone[x+i-1];
+            ans = max(ans,sum- solveByMemo(stone,i+x,dp));
+        }
+        return dp[i]= ans;
+    }
+    string stoneGameIII(vector<int>& stoneValue) {
+        // int ans = solveByRec(stoneValue,0);
+        int n = stoneValue.size();
+        vector<int>dp(n+1,-1);
+        int ans = solveByMemo(stoneValue,0,dp);
+        if(ans >0) return "Alice";
+        if(ans<0) return "Bob";
         return "Tie";
     }
 };
-
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();
