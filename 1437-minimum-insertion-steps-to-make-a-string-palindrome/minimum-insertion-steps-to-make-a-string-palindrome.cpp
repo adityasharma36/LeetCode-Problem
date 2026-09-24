@@ -41,12 +41,34 @@ public:
         }
         return dp[0][n-1];
     }
+    int spaceOp(string s){
+        int n = s.size();
+        vector<int>next(n+1,0);
+        vector<int>curr(n+1,0);
+        for(int i = n-1;i>=0;i--){
+            for(int j = i;j<n;j++){
+                unsigned long long incl = 0;
+                if(s[i] == s[j]){
+                    if(i+1 <= j-1){
+                    incl += next[j-1];
+
+                    }
+                }else{
+                    incl = 1+ min(next[j], curr[j-1]);
+                }
+            curr[j]= incl;
+            }
+            next = curr;
+        }
+        return next[n-1];
+    }
     int minInsertions(string s) {
         // int n = s.size();
         // vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
         // int ans = solveByRec(s,0,n-1);
         // int ans = solveByMemo(s,0,n-1,dp);
-        int ans = solveByTabu(s);
+        // int ans = solveByTabu(s);
+        int ans = spaceOp(s);
 
         return ans;
     }
