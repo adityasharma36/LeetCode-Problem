@@ -49,12 +49,35 @@ public:
             }
         return dp[0][1];
     }
+    int spaceOp(vector<int>& nums){
+        vector<int>curr(2,0);
+        vector<int>next(2,0);
+        int n = nums.size();
+        for(int i = n-1;i>=0;i--){
+            for(int j = 1;j>=0;j--){
+                int profit = 0;
+                if(j == 1){
+                    int inclBuy = -nums[i] + next[0];
+                    int exclBuy =next[1];
+                    profit = max(inclBuy,exclBuy);
+                }else{
+                    int inclSell = nums[i] + next[1];
+                    int exclSell = next[0];
+                    profit = max(inclSell,exclSell);
+                }
+                curr[j] = profit;
+                }
+                next = curr;
+            }
+        return next[1];
+    }
     int maxProfit(vector<int>& prices) {
         // int ans = solveByRec(prices,0,1);
         int n = prices.size();
         // vector<vector<int>>dp(n+1,vector<int>(2,-1));
         // int ans = solveByMemo(prices,0,1,dp);
-        int ans = solveByTabu(prices);
+        // int ans = solveByTabu(prices);
+        int ans = spaceOp(prices);
         return ans;
     }
 };
