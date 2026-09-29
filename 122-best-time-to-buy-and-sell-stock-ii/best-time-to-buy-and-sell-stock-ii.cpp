@@ -29,11 +29,32 @@ public:
         }
         return dp[i][sell] = profit;
     }
+    int solveByTabu(vector<int>& nums){
+        int n = nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        for(int i = n-1;i>=0;i--){
+            for(int j = 1;j>=0;j--){
+                int profit = 0;
+                if(j == 1){
+                    int inclBuy = -nums[i] + dp[i+1][0];
+                    int exclBuy = dp[i+1][1];
+                    profit = max(inclBuy,exclBuy);
+                }else{
+                    int inclSell = nums[i] + dp[i+1][1];
+                    int exclSell = dp[i+1][0];
+                    profit = max(inclSell,exclSell);
+                }
+                dp[i][j] = profit;
+                }
+            }
+        return dp[0][1];
+    }
     int maxProfit(vector<int>& prices) {
         // int ans = solveByRec(prices,0,1);
         int n = prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
-        int ans = solveByMemo(prices,0,1,dp);
+        // vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        // int ans = solveByMemo(prices,0,1,dp);
+        int ans = solveByTabu(prices);
         return ans;
     }
 };
