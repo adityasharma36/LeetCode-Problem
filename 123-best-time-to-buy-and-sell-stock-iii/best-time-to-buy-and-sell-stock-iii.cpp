@@ -61,12 +61,41 @@ public:
         return dp[0][1][2];
 
     }
+    int spaceOP(vector<int>& nums){
+        int n = nums.size();
+        vector<vector<int>>next(2,vector<int>(3,0));
+        vector<vector<int>>curr(2,vector<int>(3,0));
+        for(int i = n-1;i>=0;i--){
+            for(int j = 0;j<2;j++){
+                for(int k = 0;k<3;k++){
+                      int profit = 0;
+                        if(j){
+                        int iclBuy = -nums[i] + next[0][k];
+                        int excBuy = next[1][k];
+                        profit = max(iclBuy,excBuy);
+                        }else{
+                            int incSell = 0;
+                        if(k-1>=0){
+                           incSell = nums[i] + next[1][k-1];
+
+                        }
+                        int excSell = next[0][k];
+                        profit = max(incSell,excSell);
+                    }
+                    curr[j][k] = profit;
+                }
+                next = curr;
+            }
+        }
+        return next[1][2];
+    }
     int maxProfit(vector<int>& prices) {
         // int ans = solveByRec(prices,0,1,2);
         // int n  = prices.size();
         // vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(3,-1)));
         // int ans = solveByMemo(prices,0,1,2,dp);
-        int ans = solveByTabu(prices);
+        // int ans = solveByTabu(prices);
+        int ans = spaceOP(prices);
         return ans;
     }
 };
