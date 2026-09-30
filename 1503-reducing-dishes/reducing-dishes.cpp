@@ -13,12 +13,46 @@ public:
         int excl = solveByMemo(nums,i+1,time,dp);
         return dp[i][time]= max(incl,excl);
     }
+    int solveByTabu(vector<int>&nums){
+        int n = nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+4,0));
+        for(int i = n-1;i>=0;i--){
+            for(int j = n+1;j>=1;j--){
+               
+           
+                   int incl = nums[i] * j + dp[i+1][j+1];
+                int excl = dp[i+1][j];
+                dp[i][j]= max(incl,excl);
+            }
+        }
+        return dp[0][1];
+    }
+    int spaceOp(vector<int>&nums){
+        int n = nums.size();
+        // vector<vector<int>>dp(n+1,vector<int>(n+4,0));
+        vector<int>curr(n+4,0);
+        vector<int>next(n+4,0);
+        for(int i = n-1;i>=0;i--){
+            for(int j = n+1;j>=1;j--){
+               
+           
+                   int incl = nums[i] * j + next[j+1];
+                int excl =next[j];
+               curr[j]= max(incl,excl);
+            }
+            next = curr;
+        }
+        return next[1];
+    }
     int maxSatisfaction(vector<int>& satisfaction) {
         sort(begin(satisfaction),end(satisfaction));
         // int ans = solveByRec(satisfaction,0,1);
-        int n = satisfaction.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        int ans = solveByMemo(satisfaction,0,1,dp);
+        // int n = satisfaction.size();
+        // vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        // int ans = solveByMemo(satisfaction,0,1,dp);
+        // int ans = solveByTabu(satisfaction);
+        int ans = spaceOp(satisfaction);
+
         return ans;
     }
 };
