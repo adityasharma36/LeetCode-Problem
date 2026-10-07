@@ -32,17 +32,17 @@ public:
         }
         return count;
     }
-    void bfs(int src,unordered_map<int,bool>&isVisited,unordered_map<int,list<int>>&adjList){
+    void bfs(int src,unordered_map<int,bool>&isVisited,vector<vector<int>>&adjList){
         queue<int>q;
         q.push(src);
         isVisited[src] = true;
         while(!q.empty()){
             int front = q.front();
             q.pop();
-            for(auto list: adjList[front]){
-                if(!isVisited[list]){
-                    q.push(list);
-                    isVisited[list]= true;
+            for(int v = 0;v<adjList.size();v++){
+                if(!isVisited[v] && adjList[front][v] ==1 ){
+                    q.push(v);
+                    isVisited[v]= true;
                 }
             }
         }
@@ -52,19 +52,19 @@ public:
         int m = isConnected[0].size();
 
         int count = 0;
-        unordered_map<int,list<int>>adjList;
+        // unordered_map<int,list<int>>adjList;
         unordered_map<int,bool>isVisited;
-        for(int i = 0;i<n;i++){
-            for(int j = 0;j<m;j++){
-                if(isConnected[i][j]){
-                    adjList[i].push_back(j);
-                }
-            }
-        }
+        // for(int i = 0;i<n;i++){
+        //     for(int j = 0;j<m;j++){
+        //         if(isConnected[i][j]){
+        //             adjList[i].push_back(j);
+        //         }
+        //     }
+        // }
 
         for(int i = 0;i<n;i++){
             if(!isVisited[i]){
-                bfs(i,isVisited,adjList);
+                bfs(i,isVisited,isConnected);
                 count++;
             }
         }
