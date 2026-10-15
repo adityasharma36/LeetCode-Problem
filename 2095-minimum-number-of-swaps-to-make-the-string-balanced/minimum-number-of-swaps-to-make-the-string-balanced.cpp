@@ -11,7 +11,17 @@ public:
         }
         return (store.size()+1)/2;
     }
+    int optimiseMethod(string s){
+        int count = 0;
+        for(auto i: s){
+            if(i == '['){
+                count++;
+            }else if(count>0)count--;
+        }
+        return (count+1)/2;
+    }
     int minSwaps(string s) {
-        return stackMethod(s);
+        // return stackMethod(s);
+        return optimiseMethod(s);
     }
 };
