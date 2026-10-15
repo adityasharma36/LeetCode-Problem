@@ -1,38 +1,48 @@
 class Solution {
 public:
-    string reverseString(string s){
+    string bySpace(string s){
+        vector<string>reve;
+        int n = s.size();
+        int i = 0;
+        while(i<n){
+            while(i < n && s[i] == ' '){
+                i++;
+            }
+            
+            string temp = "";
+            while(('A' <= s[i] && s[i]<='Z')|| ('a' <= s[i] && s[i]<='z') || 
+            ('0'<=s[i] && s[i]<='9')){
+                temp.push_back(s[i]);
+                i++;
+            }
+            if(temp != ""){
+                reve.push_back(temp);
+            }
+        }   
+        for(auto i: reve){
+            cout<<i<<" ";
+        }
+        string ans = "";
 
-        
-        vector<string>ch;
-        string temp ;
-        for(int i = 0;i<s.size();i++){
-            if(s[i]!= ' '){
-                temp+=s[i];
-            }else if(temp!= ""){
-                cout<<temp<<endl;
-                ch.push_back(temp);
-                temp = "";
+        n = reve.size();
+
+        reverse(reve.begin(),reve.end());
+
+        for(int i = 0;i<n;i++){
+            if(i == n-1){
+                ans+=reve[i];
+            }else{
+                ans+=reve[i];
+                ans+=" ";
             }
         }
-        if(temp!=""){
-            ch.push_back(temp);
-            temp= "";
+        if( ans != ""){
+            return ans;
         }
-        temp = "";
-        for(int i = ch.size()-1;i>=0;i--){
-
-            temp+=ch[i];
-
-            if(i!=0){
-                 
-                temp+=" ";
-
-            }
-        }
-        return temp;
-    }
+        return "";
+    }   
     string reverseWords(string s) {
-        string reverWor= reverseString(s);
-        return reverWor;
+        return bySpace(s);
+        
     }
 };
