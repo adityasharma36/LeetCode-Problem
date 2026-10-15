@@ -1,78 +1,34 @@
 class Solution {
 public:
-    void dfa(int src,unordered_map<int,bool>&isVisited,unordered_map<int,list<int>>&adjList){
-        isVisited[src]= true;
-
-        for(auto list: adjList[src]){
-            if(!isVisited[list]){
-                dfa(list,isVisited,adjList);
-            }
-        }
-    }
-    int solveByDFS(vector<vector<int>>&isConnected){
-        int n = isConnected.size();
-        int m = isConnected[0].size();
-
-        int count = 0;
-        unordered_map<int,list<int>>adjList;
-        unordered_map<int,bool>isVisited;
-        for(int i = 0;i<n;i++){
-            for(int j = 0;j<m;j++){
-                if(isConnected[i][j]){
-                    adjList[i].push_back(j);
-                }
-            }
-        }
-
-        for(int i = 0;i<n;i++){
-            if(!isVisited[i]){
-                dfa(i,isVisited,adjList);
-                count++;
-            }
-        }
-        return count;
-    }
-    void bfs(int src,unordered_map<int,bool>&isVisited,vector<vector<int>>&adjList){
-        queue<int>q;
-        q.push(src);
+    void dfs(unordered_map<int,set<int>>&adList,int src,unordered_map<int,bool>&isVisited){
         isVisited[src] = true;
-        while(!q.empty()){
-            int front = q.front();
-            q.pop();
-            for(int v = 0;v<adjList.size();v++){
-                if(!isVisited[v] && adjList[front][v] ==1 ){
-                    q.push(v);
-                    isVisited[v]= true;
-                }
+
+        for(auto list : adList[src]){
+            if(!isVisited[list]){
+                dfs(adList,list,isVisited);
             }
         }
-    }
-    int solveByBFS(vector<vector<int>>& isConnected){
-        int n = isConnected.size();
-        int m = isConnected[0].size();
-
-        int count = 0;
-        // unordered_map<int,list<int>>adjList;
-        unordered_map<int,bool>isVisited;
-        // for(int i = 0;i<n;i++){
-        //     for(int j = 0;j<m;j++){
-        //         if(isConnected[i][j]){
-        //             adjList[i].push_back(j);
-        //         }
-        //     }
-        // }
-
-        for(int i = 0;i<n;i++){
-            if(!isVisited[i]){
-                bfs(i,isVisited,isConnected);
-                count++;
-            }
-        }
-        return count;
     }
     int findCircleNum(vector<vector<int>>& isConnected) {
-        // int count = solveByDFS(isConnected);
-        int count = solveByBFS(isConnected);
-        return count;
+        unordered_map<int,set<int>>adList;
+        int n = isConnected.size();
+        int m = isConnected[0].size();
+        for(int i = 0;i<n;i++){
+            for(int j =0;j<n;j++){
+                if(isConnected[i][j]){
+                    adList[i].insert(j);
+                    adList[j].insert(i);
+                }
+            }
+        }
+        int provience = 0;
+        unordered_map<int,bool>isVisited;
+        for(int i = 0;i<n;i++){
+            if(!isVisited[i]){
+                dfs(adList,i,isVisited);
+                provience++;
+            }
+        }
+        return provience;
     }
 };
